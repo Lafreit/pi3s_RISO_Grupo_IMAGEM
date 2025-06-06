@@ -41,6 +41,12 @@ Módulo 8: Cadastrar Fluxo de Caixa
 Módulo 9: Cadastro de Departamentos
 Módulo 10: Cadastro de Empregados
 
+# FLUXOGRAMA DO PROJETO:
+
+Este é o diagrama do nosso Product Backlog:
+
+![Diagrama do Product Backlog](Diagramas/fluxograma.svg)
+
 # Product Backlog Projeto RISO (Descritivo)
 
 Os critérios definidos para o Product Backlog do Projeto RISO as recomendações técnicas para se definir a História do Usuário (User Story) quanto a propósito, formato e características, assim definidos:
