@@ -14,38 +14,38 @@ def replace_special_characters(text):
         text = text.replace(old, new)
     return text
 
-def validate_client_data(data):
+def validate_client_data(data, is_update=False):
     required = ["nome", "documento", "cep", "email"]
     for field in required:
         if not data.get(field):
             raise ValueError("Todos os campos obrigatórios devem ser preenchidos")
 
-    if client_exists(data["documento"]):
+    documento = data["documento"]
+    if not is_update and client_exists(documento):
         raise ValueError("Cliente com este documento já existe")
 
     nome = data["nome"]
     if len(nome) < 3 or not replace_special_characters(nome).isalpha():
         raise ValueError("Nome deve conter apenas letras e ter pelo menos 3 caracteres")
 
-    documento = data["documento"]
     if len(documento) < 11 or not replace_special_characters(documento).isdigit():
-        raise ValueError("Documento precisa ter pelo menos 11 numeros e não pode conter letras")
+        raise ValueError("Documento precisa ter pelo menos 11 números e não pode conter letras")
     
     cep = data["cep"]
-    if len(cep.replace('-',"")) != 8 or not replace_special_characters(cep).isdigit():
+    if len(cep.replace('-', "")) != 8 or not replace_special_characters(cep).isdigit():
         raise ValueError("CEP deve conter exatamente 8 dígitos numéricos")
 
     email = data["email"]
     if "@" not in email:
         raise ValueError("Email inválido")
 
-    telefone = data['telefone']
-    if "telefone" in data and data["telefone"] and not replace_special_characters(data["telefone"]).isdigit():
-        raise ValueError("Telefone deve conter apenas numeros")
+    telefone = data.get("telefone", "")
+    if telefone and not replace_special_characters(telefone).isdigit():
+        raise ValueError("Telefone deve conter apenas números")
     
-    telefone_residencial = data['telefone_residencial']
-    if "telefone_residencial" in data and data["telefone_residencial"] and not replace_special_characters(data["telefone_residencial"]).isdigit():
-        raise ValueError("Telefone residencial deve conter apenas numeros")
+    telefone_residencial = data.get("telefone_residencial", "")
+    if telefone_residencial and not replace_special_characters(telefone_residencial).isdigit():
+        raise ValueError("Telefone residencial deve conter apenas números")
 
 
 def create_client(data):
@@ -68,24 +68,25 @@ def get_client(document):
     return client if client else None
 
 def update_client(document, new_data):
-    update_fields = {}
-
     if not get_client(document):
         return False
-    
-    if "nome" in new_data:
-        update_fields["nome"] = new_data["nome"]
-    if "cep" in new_data:
-        update_fields["cep"] = new_data["cep"]
-    if "email" in new_data:
-        update_fields["email"] = new_data["email"]
-    if "telefone" in new_data:
-        update_fields["telefone"] = new_data["telefone"]
-    if "telefone_residencial" in new_data:
-        update_fields["telefone_residencial"] = new_data["telefone_residencial"]
 
-    result = get_db()["clients"].update_one({"documento": document}, {"$set": update_fields})
-    return True if result.modified_count > 0 else False
+    validate_client_data(new_data, is_update=True)
+
+    update_fields = {
+        "nome": new_data.get("nome"),
+        "cep": new_data.get("cep"),
+        "email": new_data.get("email"),
+        "telefone": new_data.get("telefone"),
+        "telefone_residencial": new_data.get("telefone_residencial")
+    }
+
+    result = get_db()["clients"].update_one(
+        {"documento": document},
+        {"$set": update_fields}
+    )
+
+    return result.modified_count > 0
 
 def delete_client(document):
     result = get_db()["clients"].delete_one({"documento": document})
@@ -99,7 +100,4 @@ def count_clients():
     return get_db()["clients"].count_documents({})
 
 def client_exists(document):
-    client = get_db()["clients"].find_one({"documento": document})
-    if client:
-        return True
-    return False
+    return get_db()["clients"].count_documents({"documento": document}) > 0

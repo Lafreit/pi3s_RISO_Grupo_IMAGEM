@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Cliente{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2>Editar Cliente</h2>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="documento" value="{{ client.documento }}">
+
+    <div class="mb-3">
+      <label for="nome">Nome</label>
+      <input type="text" name="nome" value="{{ client.nome }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="cep">CEP</label>
+      <input type="text" name="cep" value="{{ client.cep }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="email">Email</label>
+      <input type="email" name="email" value="{{ client.email }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="telefone">Telefone</label>
+      <input type="text" name="telefone" value="{{ client.telefone }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label for="telefone_residencial">Telefone Residencial</label>
+      <input type="text" name="telefone_residencial" value="{{ client.telefone_residencial }}" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar Alterações</button>
+    <a href="{% url 'listar_clientes' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

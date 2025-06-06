@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Visualizar Cliente{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2>Visualizar Cliente</h2>
+
+  <div class="mb-3">
+    <strong>Nome:</strong> {{ client.nome }}
+  </div>
+  <div class="mb-3">
+    <strong>Documento:</strong> {{ client.documento }}
+  </div>
+  <div class="mb-3">
+    <strong>CEP:</strong> {{ client.cep }}
+  </div>
+  <div class="mb-3">
+    <strong>Email:</strong> {{ client.email }}
+  </div>
+  <div class="mb-3">
+    <strong>Telefone:</strong> {{ client.telefone }}
+  </div>
+  <div class="mb-3">
+    <strong>Telefone Residencial:</strong> {{ client.telefone_residencial }}
+  </div>
+
+  <a href="{% url 'listar_clientes' %}" class="btn btn-secondary">Voltar</a>
+</div>
+{% endblock %}
