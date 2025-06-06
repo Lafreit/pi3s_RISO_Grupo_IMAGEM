@@ -24,7 +24,7 @@ def validate_client_data(data):
         raise ValueError("Cliente com este documento já existe")
 
     nome = data["nome"]
-    if len(nome) < 3 or not replace_special_characters(nome).isalpha():
+    if len(nome) < 3 or len(nome) > 100 or not replace_special_characters(nome).isalpha():
         raise ValueError("Nome deve conter apenas letras e ter pelo menos 3 caracteres")
 
     documento = data["documento"]

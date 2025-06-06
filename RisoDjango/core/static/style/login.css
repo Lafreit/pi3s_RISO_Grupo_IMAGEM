@@ -15,6 +15,15 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px #000;
 }
+
+.btn-yellow {
+  background-color: #ffd700;
+  color: #000;
+  font-weight: bold;
+  align-items: center;
+  text-align: center;
+}
+
 .form-control::placeholder {
   color: #aaa;
 }

@@ -15,7 +15,7 @@ def verify_user(username):
     return user is not None 
 
 def create_user(username, password):
-    
+    ## TODO: Adicionar uma verficação para aceitar apenas letras e numeros e "(.)" "(_)" "(-)""
     if not verify_user(username):
         hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         user = {
