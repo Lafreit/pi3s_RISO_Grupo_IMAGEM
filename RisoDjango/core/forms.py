@@ -34,7 +34,7 @@ class LoginForm(forms.Form):
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
-                raise ValidationError("Funcionário com esse nome de usuario não encontrado.")
+                raise ValidationError("Usuário não encontrado.")
             else:
                 user_auth = authenticate(username=username, password=password)
 

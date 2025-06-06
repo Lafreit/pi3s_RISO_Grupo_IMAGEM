@@ -1,76 +1,88 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Lista de Clientes{% endblock %}
-
-{% block content %}
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="col-md-6 d-flex align-items-center">
-        <div class="cadastro_cliente-container w-100">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+     <!---Bootstraps--->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Clientes</title>
+    <!----css login---->
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+.container {
+    height: 120vh;
+  }
+  body {
+    background-color: #262B31;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .cadastro_cliente-container {
+    background-color: #F1F5F4;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+  }
+  
+  .form-control::placeholder {
+    color: #aaa;
+  }
+ </style>
+<body>
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="col-md-6 d-flex align-items-center">
+          <div class="cadastro_cliente-container w-100">
             <h2 class="text-center mb-4">Cadastro de Clientes</h2>
 
-            <!-- Área de erro -->
-            <div class="error-box">
-                {% if error %}
-                    <div class="alert alert-danger text-center font-weight-bold" role="alert">
-                        {{ error }}
-                    </div>
-                {% else %}
-                    <div style="height: 48px;"></div> <!-- espaço reservado -->
-                {% endif %}
+        <form>
+            
+            <div class="mb-3">
+                <label class="form-label">NOME/RAZÃO SOCIAL</label>
+                <input type="text" class="form-control rounded-pill" placeholder="Digite o nome da Empresa ou do Cliente aqui" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="form-label">CPF/CNPJ</label>
+                <input type="text" class="form-control rounded-pill" placeholder="Exemplo: 123.456.789-00" required>
             </div>
+        
+            <div class="form-group col-md-6">
+                <label class="form-label">CEP</label>
+                <input type="text" class="form-control rounded-pill" placeholder="CEP do Cliente" required>
+            </div>
+        </div>
+            <div class="mb-6">
+            <label class="form-label">EMAIL</label>
+            <input type="text" class="form-control rounded-pill" placeholder="cliente@cliente.com" required>
+        </div>
 
-            <form method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label class="form-label">Nome/Razão Social</label>
-                    <input  value="{{ data.nome | default:''}}" name="nome" type="text" class="form-control rounded-pill" placeholder="Digite o nome da Empresa ou do Cliente aqui">
-                </div>
+        <div class="mb-3">
+            <label class="form-label">TELEFONE</label>
+            <input type="text" class="form-control rounded-pill" placeholder="(19) 99999-9999" required>
+        </div>
 
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label class="form-label">CPF/CNPJ</label>
-                        <input  value="{{ data.documento | default:''}}" name="documento" type="text" class="form-control rounded-pill" placeholder="Exemplo: 123.456.789-00" oninput="formatDocument(this)">
-                    </div>
+        <div class="mb-3">
+            <label class="form-label">TELEFONE RESIDÊNCIAL</label>
+            <input type="text" class="form-control rounded-pill" placeholder="(19) 12345-6789" required>
+        </div>
 
-                    <div class="form-group col-md-6">
-                        <label class="form-label">CEP</label>
-                        <input  value="{{ data.cep | default:''}}" name="cep" type="text" class="form-control rounded-pill" placeholder="CEP do Cliente" oninput="formatCEP(this)">
-                    </div>
-                </div>
+        <div class="text-center mb-3">
+            <a href="home.html" type="button" class="btn rounded-pill text-white" style="background-color: #2C4158;width: 100%;">Cadastrar Cliente</a>
+        </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input  value="{{ data.email | default:''}}" name="email" type="text" class="form-control rounded-pill" placeholder="cliente@cliente.com">
-                </div>
+        <div class="text-center mb-3">
+            <a href="home.html" type="button"  class="btn rounded-pill text-white" style="background-color: #B6202A;width: 100%;">Cancelar Cadastro </a>
+        </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Telefone</label>
-                    <input  value="{{ data.telefone | default:''}}" name="telefone" type="text" class="form-control rounded-pill" placeholder="(19) 99999-9999" oninput="formatPhone(this)">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Telefone Residencial</label>
-                    <input  value="{{ data.telefone_residencial | default:''}}" name="telefone_residencial" type="text" class="form-control rounded-pill" placeholder="(19) 12345-6789" oninput="formatPhone(this)">
-                </div>
-
-                <div class="text-center mb-3">
-                    <button type="submit" class="btn btn-dark rounded-pill btn-lg btn-block">Criar Cadastro do Cliente</button>
-                </div>
-
-                <div class="text-center mb-3">
-                    <a href="{% url 'index' %}" class="btn btn-secondary btn-lg btn-block">Cancelar Cadastro</a>
-                </div>
-            </form>
+        </form>
         </div>
     </div>
-</div>
-{% endblock %}
 
-{% block scripts %}
-<script src="{% static 'utils/InputMaskScript.js' %}"></script>
-{% endblock %}
-
-{% block styles %}
-    <link rel="stylesheet" href="{% static 'style/cadastro_cliente.css' %}">
-{% endblock %}
+</body>
+</html>
