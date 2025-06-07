@@ -4,6 +4,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from core.forms import LoginForm
 from .services import user_services, client_services 
+from core.services.client_services import get_db
 
 # Create your views here.
 
@@ -67,26 +68,59 @@ def listar_clientes(request):
     return render(request, 'listar_clientes.html')
 
 @login_required
-def editar_clientes(request, client_id):
-    if request.method == 'GET':
-        client = client_services.get_client(client_id)
-        return render(request, 'edit_client.html', context={'client': client})
+def editar_cliente(request):
+    documento = request.GET.get('documento') or request.POST.get('documento')
+    if not documento:
+        return redirect('listar_clientes')
+
+    client = client_services.get_client(documento)
+    if not client:
+        return redirect('listar_clientes')
+
     if request.method == 'POST':
         data = {
-            "nome": request.POST.get('nome'),
-            "documento": request.POST.get('documento'),
-            "cep": request.POST.get('cep'),
-            "email": request.POST.get('email'),
-            "telefone": request.POST.get('telefone'),
-            "telefone_residencial": request.POST.get('telefone_residencial'),
+            "nome": request.POST.get("nome"),
+            "documento": request.POST.get("documento"),
+            "cep": request.POST.get("cep"),
+            "email": request.POST.get("email"),
+            "telefone": request.POST.get("telefone"),
+            "telefone_residencial": request.POST.get("telefone_residencial"),
         }
-        client_services.update_client(client_id, data)
-        return redirect('listar_clientes')
-    return render(request, 'edit_client.html')
+
+        try:
+            client_services.update_client(documento, data)
+            return redirect('listar_clientes')
+        except ValueError as e:
+            return render(request, 'editar_cliente.html', {
+                'client': data,
+                'error': str(e)
+            })
+
+    return render(request, 'editar_cliente.html', {'client': client})
 
 @login_required
-def apagar_client(request, client_id):
-    if request.method == 'POST':
-        client_services.delete_client(client_id)
+def excluir_cliente(request):
+    documento = request.GET.get('documento') or request.POST.get('documento')
+    if not documento:
         return redirect('listar_clientes')
-    return render(request, 'apagar_client.html', context={'client_id': client_id})
+
+    client = get_db()["clients"].find_one({"documento": documento})
+    if not client:
+        return redirect('listar_clientes')
+
+    if request.method == 'POST':
+            deleted = client_services.delete_client(documento)
+            if deleted:
+                return redirect('listar_clientes')
+
+@login_required
+def vizualizar_cliente(request):
+    documento = request.GET.get('documento')
+    if not documento:
+        return redirect('listar_clientes')
+
+    client = client_services.get_client(documento)
+    if not client:
+        return redirect('listar_clientes')
+
+    return render(request, 'vizualizar_cliente.html', {'client': client})

@@ -1,0 +1,4 @@
+TODO: Adicionar erros de senha e usuário 
+TODO: Adicionar checkbox para "lembrar usuário" 
+TODO: Criar página "esqueci minha senha" 
+
