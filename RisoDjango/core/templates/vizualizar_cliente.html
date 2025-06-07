@@ -95,23 +95,27 @@
 <body>
 
     <div class="topo">
-        <button class="voltar-btn">Voltar</button>
-        <div class="titulo">Cliente: "nome_cliente"</div>
-        <button class="editar-btn">Editar</button>
+        <a href="{% url 'listar_clientes' %}" class="voltar-btn">Voltar</a>
+        <div class="titulo">Cliente: {{client.nome}}</div>
+        <a href="{% url 'editar_cliente' %}?documento={{ client.documento }}" 
+        class="btn btn-sm btn-info me-2 editar-btn" 
+        title="Visualizar">
+        Editar
+        </a>
     </div>
 
     <div class="info-cliente">
         <div>
-            <p>Nome cliente</p>
-            <p>Email</p>
+            <p>Nome cliente: {{client.nome}}</p>
+            <p>Email: {{client.email}}</p>
         </div>
         <div>
-            <p>CPF/CNPJ</p>
-            <p>Telefone Residencial</p>
+            <p>CPF/CNPJ: {{client.documento}}</p>
+            <p>Telefone Residencial: {{client.telefone_residencial}}</p>
         </div>
         <div>
-            <p>CEP</p>
-            <p>Telefone Celular</p>
+            <p>CEP: {{client.cep}}</p>
+            <p>Telefone Celular: {{client.telefone}}</p>
         </div>
     </div>
 
