@@ -8,8 +8,8 @@ from core.services.client_services import get_db
 
 # Create your views here.
 
-def index(request):
-    return render(request, 'index.html')
+""" def index(request):
+    return render(request, 'index.html') """
 
 def login(request):
     if request.user.id is not None:
@@ -28,7 +28,7 @@ def login(request):
 def logout(request):
     if request.method == "POST":
         auth_logout(request)
-        return redirect("index")
+        return redirect("login")
     return render(request,"logout.html")
     
 

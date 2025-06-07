@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import cadastro_cliente, login, logout, listar_clientes, index, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente
+from core.views import cadastro_cliente, login, logout, listar_clientes, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente
 
 
 
