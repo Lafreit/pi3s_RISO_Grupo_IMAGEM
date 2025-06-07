@@ -32,7 +32,7 @@
 <div class="container d-flex justify-content-center align-items-center">
   <div class="col-md-6 d-flex align-items-center">
     <div class="cadastro_cliente-container w-100">
-      <h2 class="text-center mb-4">Cadastro de Clientes</h2>
+      <h2 class="text-center mb-1 fs-2">Cadastro de Clientes</h2>
 
       <!-- Área de erro -->
       <div class="error-box">
@@ -51,23 +51,23 @@
         <div class="mb-3">
           <label class="form-label">NOME/RAZÃO SOCIAL</label>
           <input value="{{ data.nome | default:'' }}" name="nome" type="text"
-                 class="form-control rounded-pill"
+                 class="form-control"
                  placeholder="Digite o nome da Empresa ou do Cliente aqui" required>
         </div>
 
-        <div class="form-row">
-          <div class="form-group col-md-6">
+        <div class="grid grid-row-2">
+          <div class="form-group col-span-6">
             <label class="form-label">CPF/CNPJ</label>
             <input value="{{ data.documento | default:'' }}" name="documento" type="text"
-                   class="form-control rounded-pill"
+                   class="form-control"
                    placeholder="Exemplo: 123.456.789-00"
                    oninput="formatDocument(this)" required>
           </div>
 
-          <div class="form-group col-md-6">
+          <div class="form-group col-span-6">
             <label class="form-label">CEP</label>
             <input value="{{ data.cep | default:'' }}" name="cep" type="text"
-                   class="form-control rounded-pill"
+                   class="form-control"
                    placeholder="CEP do Cliente"
                    oninput="formatCEP(this)" required>
           </div>
@@ -76,14 +76,14 @@
         <div class="mb-3">
           <label class="form-label">EMAIL</label>
           <input value="{{ data.email | default:'' }}" name="email" type="text"
-                 class="form-control rounded-pill"
+                 class="form-control"
                  placeholder="cliente@cliente.com" required>
         </div>
 
         <div class="mb-3">
           <label class="form-label">TELEFONE</label>
           <input value="{{ data.telefone | default:'' }}" name="telefone" type="text"
-                 class="form-control rounded-pill"
+                 class="form-control"
                  placeholder="(19) 99999-9999"
                  oninput="formatPhone(this)" required>
         </div>
@@ -91,17 +91,17 @@
         <div class="mb-3">
           <label class="form-label">TELEFONE RESIDENCIAL</label>
           <input value="{{ data.telefone_residencial | default:'' }}" name="telefone_residencial" type="text"
-                 class="form-control rounded-pill"
+                 class="form-control"
                  placeholder="(19) 12345-6789"
                  oninput="formatPhone(this)">
         </div>
 
         <div class="text-center mb-3">
-          <button type="submit" class="btn rounded-pill text-white" style="background-color: #2C4158; width: 100%;">Cadastrar Cliente</button>
+          <button type="submit" class="btn text-white" style="background-color: #2C4158; width: 100%;">Cadastrar Cliente</button>
         </div>
 
         <div class="text-center mb-3">
-          <a href="{% url 'listar_clientes' %}" class="btn rounded-pill text-white" style="background-color: #B6202A; width: 100%;">Cancelar Cadastro</a>
+          <a href="{% url 'listar_clientes' %}" class="btn text-white" style="background-color: #B6202A; width: 100%;">Cancelar Cadastro</a>
         </div>
 
       </form>
