@@ -4,8 +4,7 @@ from core.views import cadastro_cliente, login, logout, listar_clientes, index, 
 
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('login/', login, name='login'),
+    path('', login, name='login'),
     path('logout/', logout, name='logout'),
     path('dashboard/', dashboard, name='dashboard'),
     path('cadastro-cliente/', cadastro_cliente, name='cadastro_cliente'),
