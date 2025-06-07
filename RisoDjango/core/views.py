@@ -49,7 +49,7 @@ def cadastro_cliente(request):
                 "telefone_residencial": request.POST.get('telefone_residencial'),
             }
             client_services.create_client(data)
-            return redirect('cadastro_servico')
+            return redirect('listar_clientes')
         except Exception as e:
             print(f"Error creating client: {e}")
             return render(request, 'cadastro_cliente.html', context={'success': False, 'error': str(e), 'data': data})
