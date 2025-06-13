@@ -1093,7 +1093,7 @@ python manage.py runserver
 
 O servidor estará acessível em http://127.0.0.1:8000/.
 
-# 3. Estrutura do Projeto Backend
+## 3. Estrutura do Projeto Backend
 
 O projeto pi3s_RISO é organizado como um projeto Django padrão, com múltiplos aplicativos (apps) dentro de uma pasta apps/, promovendo modularidade e reusabilidade.
 
