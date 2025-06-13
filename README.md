@@ -1097,7 +1097,8 @@ O servidor estará acessível em http://127.0.0.1:8000/.
 
 O projeto pi3s_RISO é organizado como um projeto Django padrão, com múltiplos aplicativos (apps) dentro de uma pasta apps/, promovendo modularidade e reusabilidade.
 
-```pi3s_RISO/
+```
+pi3s_RISO/
 ├── novo_projeto/         # Configurações globais do Django
 │   ├── settings.py       # Configurações do projeto
 │   ├── urls.py           # Rotas URL principais
@@ -1141,6 +1142,7 @@ O projeto pi3s_RISO é organizado como um projeto Django padrão, com múltiplos
 ├── manage.py             # Utilitário de linha de comando do Django
 ├── requirements.txt      # Dependências do projeto
 └── db.sqlite3            # Banco de dados SQLite (durante desenvolvimento)
+```
 
 # 4. Documentação da API RESTful (OpenAPI/Swagger UI)
 
