@@ -1096,8 +1096,8 @@ O servidor estará acessível em http://127.0.0.1:8000/.
 # 3. Estrutura do Projeto Backend
 
 O projeto pi3s_RISO é organizado como um projeto Django padrão, com múltiplos aplicativos (apps) dentro de uma pasta apps/, promovendo modularidade e reusabilidade.
-```plaintext
-pi3s_RISO/
+
+```pi3s_RISO/
 ├── novo_projeto/         # Configurações globais do Django
 │   ├── settings.py       # Configurações do projeto
 │   ├── urls.py           # Rotas URL principais
@@ -1141,7 +1141,7 @@ pi3s_RISO/
 ├── manage.py             # Utilitário de linha de comando do Django
 ├── requirements.txt      # Dependências do projeto
 └── db.sqlite3            # Banco de dados SQLite (durante desenvolvimento)
-```
+
 # 4. Documentação da API RESTful (OpenAPI/Swagger UI)
 
 A API do pi3s_RISO é autodocumentada utilizando drf-spectacular, que gera uma especificação OpenAPI 3.0. Esta especificação pode ser visualizada e testada interativamente através da Swagger UI.
