@@ -995,13 +995,15 @@ Refinamento Contínuo do Backlog (Product Backlog Refinement): Em muitas metodol
 
 O Product Owner é o principal responsável por gerenciar e manter o Product Backlog. Ele é quem decide quais itens entram no backlog, qual a prioridade deles e quem garante que o backlog esteja claro e compreensível para a equipe de desenvolvimento. No entanto, a modificação do backlog é frequentemente um esforço colaborativo que envolve a equipe de desenvolvimento e outros stakeholders.
 
-### Documentação Técnica do Backend - Projeto pi3s_RISO
+# PARTE II - Desenvolvimento Backend - Projeto pi3s_RISO
+
+# Documentação Técnica do Backend - Projeto pi3s_RISO
 
 # 1. Visão Geral do Projeto
 
 O projeto pi3s_RISO consiste em um sistema de gerenciamento de ordens de serviço (OS) para uma oficina, implementado como uma API RESTful. O objetivo principal é fornecer uma interface robusta e modular para a manipulação de dados relacionados a clientes, veículos, serviços, empregados, departamentos e, centralmente, ordens de serviço.
 
-# 1.1. Tecnologias Utilizadas
+## 1.1. Tecnologias Utilizadas
 
     Framework Principal: Django 5.2
     API REST: Django REST Framework (DRF) 3.15
@@ -1011,27 +1013,27 @@ O projeto pi3s_RISO consiste em um sistema de gerenciamento de ordens de serviç
     Ambiente Virtual: venv
     Linguagem de Programação: Python 3.13
 
-# 1.2. Arquitetura
+## 1.2. Arquitetura
 
 O backend segue uma arquitetura baseada em microsserviços lógicos ou "aplicativos" (apps Django), onde cada app é responsável por uma funcionalidade específica e isolada. A comunicação entre o front-end e o back-end ocorre através de chamadas a uma API RESTful, que adere aos princípios do padrão REST.
 
 As operações CRUD (Create, Read, Update, Delete) são expostas via ViewSets do Django REST Framework, mapeadas para recursos específicos através de routers.
 
-## 2. Configuração e Instalação do Ambiente
+# 2. Configuração e Instalação do Ambiente
 
 Esta seção detalha os passos para configurar e executar o ambiente de desenvolvimento do backend.
-# 2.1. Pré-requisitos
+## 2.1. Pré-requisitos
 
     Python 3.13: Verifique a instalação com python --version.
     pip: Gerenciador de pacotes Python, verifique com pip --version.
 
-# 2.2. Clonagem do Repositório (Assumindo Git)
+## 2.2. Clonagem do Repositório (Assumindo Git)
 
     cmd:
     git clone https://github.com/Lafreit/pi3s_RISO_Grupo_IMAGEM
     cd pi3s_RISO
 
-# 2.3. Criação e Ativação do Ambiente Virtual
+## 2.3. Criação e Ativação do Ambiente Virtual
 
 É altamente recomendável utilizar um ambiente virtual para isolar as dependências do projeto.
 
@@ -1055,7 +1057,7 @@ Linux/macOS:
     Bash
     source tutorial-env/bin/activate
 
-# 2.4. Instalação de Dependências
+## 2.4. Instalação de Dependências
 
 Com o ambiente virtual ativado, instale todas as bibliotecas necessárias:
 
@@ -1065,7 +1067,7 @@ Com o ambiente virtual ativado, instale todas as bibliotecas necessárias:
 
 (Nota: Certifique-se de ter um arquivo requirements.txt atualizado no seu projeto. Caso não tenha, gere-o com pip freeze > requirements.txt)
 
-# 2.5. Configuração do Banco de Dados
+## 2.5. Configuração do Banco de Dados
 
 O projeto utiliza SQLite por padrão, que não requer configuração adicional. Para criar o esquema do banco de dados com base nos modelos Django:
 
@@ -1073,7 +1075,7 @@ cmd:
 python manage.py makemigrations
 python manage.py migrate
 
-# 2.6. Criação de Usuário Administrador (Superuser)
+## 2.6. Criação de Usuário Administrador (Superuser)
 
 Para acessar o Django Admin e interagir com os dados do sistema:
 
@@ -1082,7 +1084,7 @@ python manage.py createsuperuser
 
 Siga as instruções no terminal para definir nome de usuário, e-mail e senha.
 
-# 2.7. Execução do Servidor de Desenvolvimento
+## 2.7. Execução do Servidor de Desenvolvimento
 
 Para iniciar o servidor local:
 
@@ -1091,7 +1093,7 @@ python manage.py runserver
 
 O servidor estará acessível em http://127.0.0.1:8000/.
 
-## 3. Estrutura do Projeto Backend
+# 3. Estrutura do Projeto Backend
 
 O projeto pi3s_RISO é organizado como um projeto Django padrão, com múltiplos aplicativos (apps) dentro de uma pasta apps/, promovendo modularidade e reusabilidade.
 
@@ -1140,7 +1142,7 @@ pi3s_RISO/
 ├── requirements.txt      # Dependências do projeto
 └── db.sqlite3            # Banco de dados SQLite (durante desenvolvimento)
 
-## 4. Documentação da API RESTful (OpenAPI/Swagger UI)
+# 4. Documentação da API RESTful (OpenAPI/Swagger UI)
 
 A API do pi3s_RISO é autodocumentada utilizando drf-spectacular, que gera uma especificação OpenAPI 3.0. Esta especificação pode ser visualizada e testada interativamente através da Swagger UI.
 
@@ -1149,11 +1151,11 @@ A API do pi3s_RISO é autodocumentada utilizando drf-spectacular, que gera uma e
 
 A Swagger UI permite explorar todos os endpoints disponíveis, suas operações (GET, POST, PUT, PATCH, DELETE), parâmetros esperados e exemplos de respostas.
 
-## 5. Autenticação na API (JWT)
+# 5. Autenticação na API (JWT)
 
 A API utiliza JSON Web Tokens (JWT) para autenticação. Todas as operações protegidas exigem que o cliente envie um token JWT válido no cabeçalho Authorization.
 
-# 5.1. Obtenção de Tokens
+## 5.1. Obtenção de Tokens
 
 Tokens de acesso e refresh são obtidos através do endpoint de login:
 
@@ -1176,7 +1178,7 @@ JSON
 
     O access token é o token de acesso principal, e o refresh token é usado para obter um novo access token quando o atual expirar.
 
-# 5.2. Uso de Tokens
+## 5.2. Uso de Tokens
 
 Para acessar endpoints protegidos, o access token deve ser incluído no cabeçalho Authorization de todas as requisições, no formato Bearer <token>:
 
@@ -1184,7 +1186,7 @@ Para acessar endpoints protegidos, o access token deve ser incluído no cabeçal
 
     Authorization: Bearer eyJhbGciOiJIUzI1Ni...
 
-# 5.3. Renovação de Tokens
+## 5.3. Renovação de Tokens
 
 Quando o access token expirar, um novo pode ser obtido utilizando o refresh token:
 
@@ -1198,17 +1200,17 @@ Quando o access token expirar, um novo pode ser obtido utilizando o refresh toke
 
     Resposta: Um novo access token.
 
-## 6. Módulos da API (Apps) e Endpoints Principais
+# 6. Módulos da API (Apps) e Endpoints Principais
 
 A API é composta pelos seguintes módulos, cada um expondo endpoints para gerenciamento de seus respectivos recursos. Todos os endpoints são prefixados com /api/.
 
-# 6.1. Autenticação (/api/autenticacao/)
+## 6.1. Autenticação (/api/autenticacao/)
 
     POST /api/autenticacao/login/: Autentica um usuário e retorna tokens JWT de acesso e refresh.
     POST /api/autenticacao/refresh-token/: Renova um token de acesso usando um token de refresh.
     POST /api/autenticacao/logout/: (Se implementado) invalida o token.
 
-# 6.2. Clientes (/api/clientes/)
+## 6.2. Clientes (/api/clientes/)
 
 Gerenciamento de informações de clientes.
 
@@ -1220,7 +1222,7 @@ Gerenciamento de informações de clientes.
         PUT /api/clientes/{id}/: Atualiza um cliente existente.
         DELETE /api/clientes/{id}/: Exclui um cliente.
 
-# 6.3. Veículos (/api/veiculos/)
+## 6.3. Veículos (/api/veiculos/)
 
 Gerenciamento de informações de veículos, vinculados a clientes.
 
@@ -1232,28 +1234,28 @@ Gerenciamento de informações de veículos, vinculados a clientes.
         PUT /api/veiculos/{id}/: Atualiza um veículo existente.
         DELETE /api/veiculos/{id}/: Exclui um veículo.
 
-# 6.4. Departamentos (/api/departamentos/)
+## 6.4. Departamentos (/api/departamentos/)
 
 Gerenciamento de departamentos internos da oficina.
 
     Modelo: Departamento
     Endpoints: Padrão CRUD.
 
-# 6.5. Empregados (/api/empregados/)
+## 6.5. Empregados (/api/empregados/)
 
 Gerenciamento de informações de empregados, vinculados a departamentos.
 
     Modelo: Empregado
     Endpoints: Padrão CRUD.
 
-# 6.6. Serviços (/api/servicos/)
+## 6.6. Serviços (/api/servicos/)
 
 Gerenciamento de tipos de serviços predefinidos (ex: "Troca de Óleo", "Alinhamento").
 
     Modelo: Servico
     Endpoints: Padrão CRUD.
 
-# 6.7. Ordem de Serviço (/api/ordem-servico/ e /api/itens-ordem-servico/)
+## 6.7. Ordem de Serviço (/api/ordem-servico/ e /api/itens-ordem-servico/)
 
 Módulo central para criação e gerenciamento de ordens de serviço. Uma Ordem de Serviço (OS) está vinculada a um cliente e um veículo e contém múltiplos itens de serviço.
 
@@ -1271,7 +1273,7 @@ Módulo central para criação e gerenciamento de ordens de serviço. Uma Ordem 
         PUT /api/itens-ordem-servico/{id}/: Atualiza um item de serviço existente.
         DELETE /api/itens-ordem-servico/{id}/: Exclui um item de serviço.
 
-## 7. Modelo de Dados Conceitual (Relações Chave-Estrangeira)
+# 7. Modelo de Dados Conceitual (Relações Chave-Estrangeira)
 
 As relações entre os modelos são estabelecidas através de Chaves Estrangeiras (Foreign Keys), garantindo a integridade referencial do banco de dados.
 
@@ -1280,13 +1282,13 @@ As relações entre os modelos são estabelecidas através de Chaves Estrangeira
     Veiculo: Possui FK para Cliente.
     Empregado: Possui FK para Departamento.
 
-## 8. Considerações de Desenvolvimento e Manutenção
+# 8. Considerações de Desenvolvimento e Manutenção
 
     Modularidade: A estrutura de apps Django facilita a adição de novas funcionalidades e a manutenção de módulos existentes de forma isolada.
     Padronização: A utilização do Django REST Framework e ViewSets padroniza a criação de endpoints RESTful.
     Testes: É recomendado implementar testes de unidade e integração para cada app e endpoint da API para garantir a robustez e a correção das funcionalidades.
     Segurança: A autenticação JWT protege os endpoints. Para produção, outras medidas de segurança (HTTPS, validação de inputs, etc.) são essenciais.
 
-## 9. Implantação (Deployment)
+# 9. Implantação (Deployment)
 
 Para implantação em ambiente de produção, é necessário configurar um servidor WSGI (como Gunicorn ou uWSGI) e um servidor web (como Nginx ou Apache) para servir a aplicação Django de forma eficiente e segura. A configuração do banco de dados também deve ser alterada de SQLite para um SGBD robusto (ex: PostgreSQL).
