@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from core.forms import LoginForm
-from .services import user_services, client_services , vehicles_services
+from .services import client_services , vehicles_services, servicos_services
 from core.services.client_services import get_db
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -136,6 +136,7 @@ def vizualizar_cliente(request):
     return render(request, 'vizualizar_cliente.html', {
         'client': client,
         'vehicles': vehicles,
+        'services': servicos_services.count_services_by_client_document(documento),
     })
 
 
@@ -272,3 +273,117 @@ def vizualizar_veiculo(request):
         'vehicle': vehicle,
         'cliente': cliente
     })
+
+@login_required
+def listar_servicos(request):
+    if request.method == 'GET':
+        services = servicos_services.show_services()
+        print(services)
+        return render(request, 'listar_servicos.html', context={'services': services})
+    if request.method == 'POST':
+        service_id = request.POST.get('codigo')
+        servicos_services.delete_service(service_id)
+        return redirect('listar_servicos')
+    return render(request, 'listar_servicos.html')
+
+@login_required
+def cadastro_servico(request):
+    if request.method == 'GET':
+        documento_cliente = request.GET.get('documento')
+        if not documento_cliente:
+            return redirect('listar_clientes')
+        placa = request.GET.get('placa')
+        if not placa:
+            return redirect('listar_veiculos')
+        return render(request, 'cadastro_servico.html', {
+            'documento_cliente': documento_cliente,
+            'placa_veiculo': placa
+        })
+    if request.method == 'POST':
+        documento_cliente = request.POST.get('documento')
+        if not documento_cliente:
+            return redirect('listar_clientes')
+        placa = request.POST.get('placa')
+        if not placa:
+            return redirect('listar_veiculos')
+        print("Dados do serviço recebidos:", request.POST)
+        data = {
+            "codigo": request.POST.get('codigo'),
+            "tipo": request.POST.get('tipo'),
+            "descricao": request.POST.get('descricao'),
+            "preco": float(request.POST.get('preco', 0.0)),
+            "prazo": int(request.POST.get('prazo', 0)),
+            "quantidadeRodas": int(request.POST.get('quantidadeRodas', 1)),
+            "duracao": int(request.POST.get('duracao', 0)),
+            "status": request.POST.get('status', 'ativo'),
+            "documento_cliente": documento_cliente,
+            "placa_veiculo": placa,  
+        }
+        try:
+            servicos_services.register_service(data)
+            return redirect('listar_servicos')
+        except Exception as e:
+            return render(request, 'cadastro_servico.html', {'error': str(e), 'data': data})
+
+    return render(request, 'cadastro_servico.html')
+
+@login_required
+def editar_servico(request):
+    codigo = request.GET.get('codigo') or request.POST.get('codigo')
+    if not codigo:
+        return redirect('listar_servicos')
+
+    service = servicos_services.get_service(codigo)
+    if not service:
+        return redirect('listar_servicos')
+
+    if request.method == 'POST':
+        new_data = {
+            "tipo": request.POST.get("tipo"),
+            "descricao": request.POST.get("descricao"),
+            "preco": float(request.POST.get("preco", 0.0)),
+            "prazo": int(request.POST.get("prazo", 0)),
+            "quantidadeRodas": int(request.POST.get("quantidadeRodas", 1)),
+            "duracao": int(request.POST.get("duracao", 0)),
+            "status": request.POST.get("status", 'ativo')
+        }
+        success = servicos_services.update_service(codigo, new_data)
+        if success:
+            return redirect('listar_servicos')
+        else:
+            error = "Erro ao atualizar serviço."
+            return render(request, 'editar_servico.html', {'service': new_data, 'error': error})
+
+    return render(request, 'editar_servico.html', {'service': service})
+
+@login_required
+def excluir_servico(request):
+    codigo = request.GET.get('codigo')
+    if not codigo:
+        return redirect('listar_servicos')
+
+    service = servicos_services.get_service(codigo)
+    if not service:
+        return redirect('listar_servicos')
+
+    if request.method == 'POST':
+        deleted = servicos_services.delete_service(codigo)
+        if deleted:
+            return redirect('listar_servicos')
+        else:
+            error = "Falha ao excluir serviço."
+            return render(request, 'excluir_servico.html', {'service': service, 'error': error})
+
+    return render(request, 'excluir_servico.html', {'service': service})
+
+@login_required
+def vizualizar_servico(request):
+    codigo = request.GET.get('codigo')
+    if not codigo:
+        return redirect('listar_servicos')
+
+    service = servicos_services.get_service(codigo)
+    if not service:
+        return redirect('listar_servicos')
+
+    return render(request, 'vizualizar_servico.html', {'service': service})

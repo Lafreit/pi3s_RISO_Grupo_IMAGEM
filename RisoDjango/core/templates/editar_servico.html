@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Serviço{% endblock %}
+
+{% block content %}
+<style>
+  body { background-color: #262B31; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; }
+  .container { background-color: #F1F5F4; padding: 35px 40px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.3); max-width: 600px; width: 100%; }
+  h2 { color: #2C4158; font-weight: bold; text-align: center; margin-bottom: 30px; }
+  label { font-weight: 600; color: #262B31; }
+  .form-control { border-radius: 6px; border: 1px solid #ccc; padding: 10px 12px; font-size: 1rem; margin-bottom: 15px; }
+  .form-control::placeholder { color: #aaa; }
+  .btn { display: block; width: 100%; padding: 12px 0; border-radius: 6px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; text-align: center; color: white; transition: background-color 0.3s ease; margin-top: 10px; text-decoration: none; }
+  .btn-success { background-color: #2C4158; }
+  .btn-success:hover { background-color: #22354a; }
+  .btn-secondary { background-color: #46627f; }
+  .btn-secondary:hover { background-color: #324a5e; }
+</style>
+
+<div class="container">
+  <h2>Editar Serviço</h2>
+  {% if error %}
+    <div class="alert alert-danger text-center" role="alert">{{ error }}</div>
+  {% else %}
+    <div style="height: 48px;"></div>
+  {% endif %}
+  <form method="POST" >
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ service.id }}">
+
+    <label for="tipo_servico">Tipo de Serviço</label>
+    <input type="text" name="tipo_servico" value="{{ service.tipo_servico }}" class="form-control" required>
+
+    <label for="codigo">Código</label>
+    <input type="text" name="codigo" value="{{ service.codigo }}" class="form-control" required>
+
+    <label for="tempo_execucao">Tempo de Execução</label>
+    <input type="text" name="tempo_execucao" value="{{ service.tempo_execucao }}" class="form-control" required>
+
+    <label for="valor_unitario">Valor Unitário</label>
+    <input type="text" name="valor_unitario" value="{{ service.valor_unitario }}" class="form-control" required>
+
+    <label for="quantidade_rodas">Quantidade de Rodas</label>
+    <input type="text" name="quantidade_rodas" value="{{ service.quantidade_rodas }}" class="form-control" required>
+
+    <label for="data_inicio">Data de Início</label>
+    <input type="date" name="data_inicio" value="{{ service.data_inicio }}" class="form-control" required>
+
+    <label for="prazo_final">Prazo Final</label>
+    <input type="date" name="prazo_final" value="{{ service.prazo_final }}" class="form-control" required>
+
+    <label for="descricao">Descrição</label>
+    <textarea name="descricao" class="form-control" rows="3" required>{{ service.descricao }}</textarea>
+
+    <button type="submit" class="btn btn-success">Salvar Alterações</button>
+    <a href="{% url 'listar_servicos' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}
