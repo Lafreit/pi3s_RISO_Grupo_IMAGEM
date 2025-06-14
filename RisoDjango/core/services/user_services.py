@@ -7,15 +7,12 @@ def get_db():
     mongo = MongoDBConnection(db_name=db_name)
     return mongo.get_db()
 
-##Talvez seja desnecessário essa collection de usuário pois foi adicionado um model form para usuario
-
 def verify_user(username):
     
     user = get_db()["users"].find_one({"username": username})
     return user is not None 
 
 def create_user(username, password):
-    ## TODO: Adicionar uma verficação para aceitar apenas letras e numeros e "(.)" "(_)" "(-)""
     if not verify_user(username):
         hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         user = {
@@ -63,7 +60,7 @@ def delete_user(username):
 
 def show_users():
     
-    usuarios = get_db()["users"].find({}, {"password": 0})  # Oculta senhas
+    usuarios = get_db()["users"].find({}, {"password": 0})
     return list(usuarios)
 
 def count_users():

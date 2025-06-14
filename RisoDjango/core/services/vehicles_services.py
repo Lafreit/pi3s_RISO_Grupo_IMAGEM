@@ -18,7 +18,7 @@ def register_vehicle(vehicle_data):
             "quilometragem": vehicle_data.get("quilometragem", 0),
             "cor": vehicle_data.get("cor", "não especificada"),
             "observacoes": vehicle_data.get("observacoes", ""),
-            "documento_cliente": vehicle_data.get("documento_cliente")  # <-- vínculo
+            "documento_cliente": vehicle_data.get("documento_cliente")
         }
 
         get_db()["vehicles"].insert_one(vehicle)
