@@ -1,4 +1,4 @@
-{% load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,138 +8,207 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: white;
+            padding: 40px 20px;
+            background-color: #262B31;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #F1F5F4;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 900px;
         }
 
         .topo {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            margin-bottom: 30px;
         }
 
         .voltar-btn {
-            background-color: #f39c12;
+            background-color: #B6202A;
             color: white;
             border: none;
             padding: 10px 25px;
             font-weight: bold;
             cursor: pointer;
             border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .voltar-btn:hover {
+            background-color: #8a181f;
         }
 
         .titulo {
+            color: #2C4158;
             font-style: italic;
-            font-size: 20px;
+            font-size: 26px;
+            font-weight: bold;
         }
 
         .editar-btn {
-            background-color: #2c3e50;
+            background-color: #2C4158;
             color: white;
             border: none;
             padding: 10px 25px;
             font-weight: bold;
             cursor: pointer;
             border-radius: 5px;
-            margin: 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .editar-btn:hover {
+            background-color: #22354a;
         }
 
         .info-cliente {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            background-color: #ccc;
-            padding: 20px;
-            color: black;
+            gap: 20px;
+            background-color: #d9dbdb;
+            padding: 25px 30px;
+            border-radius: 8px;
+            color: #262B31;
+            margin-bottom: 25px;
         }
 
         .info-cliente p {
             margin: 8px 0;
+            font-weight: 600;
+        }
+
+        .btn-cadastrar-veiculo {
+            display: inline-block;
+            background-color: #2C4158;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 40px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-cadastrar-veiculo:hover {
+            background-color: #22354a;
         }
 
         .secao-veiculo {
-            margin-top: 40px;
             text-align: center;
+        }
+
+        .secao-veiculo h3 {
+            color: #2C4158;
+            font-weight: bold;
+            margin-bottom: 25px;
         }
 
         .container-veiculo {
-            background-color: #e0e0e0;
-            display: inline-block;
-            padding: 30px;
+            background-color: #d9dbdb;
+            padding: 25px 30px;
             border-radius: 10px;
+            margin-bottom: 25px;
             text-align: left;
-            min-width: 300px;
-        }
-
-        .container-veiculo h3 {
-            text-align: center;
-            margin-top: 0;
+            color: #262B31;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            max-width: 100%;
         }
 
         .container-veiculo p {
             margin: 10px 0;
+            font-weight: 600;
         }
 
-        .container-veiculo button {
-            display: block;
-            margin: 20px auto 0;
-            background-color: #2c3e50;
+        .container-veiculo .btn-primary {
+            background-color: #2C4158;
             color: white;
             border: none;
             padding: 10px 25px;
-            cursor: pointer;
             border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .container-veiculo .btn-primary:hover {
+            background-color: #22354a;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .info-cliente {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            .topo {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .editar-btn, .voltar-btn {
+                width: 100%;
+                text-align: center;
+            }
+            .container {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="topo">
+            <a href="{% url 'listar_clientes' %}" class="voltar-btn">Voltar</a>
+            <div class="titulo">Cliente: {{ client.nome }}</div>
+            <a href="{% url 'editar_cliente' %}?documento={{ client.documento }}" 
+               class="editar-btn" title="Editar Cliente">
+               Editar
+            </a>
+        </div>
 
-    <div class="topo">
-        <a href="{% url 'listar_clientes' %}" class="voltar-btn">Voltar</a>
-        <div class="titulo">Cliente: {{client.nome}}</div>
-        <a href="{% url 'editar_cliente' %}?documento={{ client.documento }}" 
-        class="btn btn-sm btn-info me-2 editar-btn" 
-        title="Visualizar">
-        Editar
+        <div class="info-cliente">
+            <div>
+                <p>Nome cliente: {{ client.nome }}</p>
+                <p>Email: {{ client.email }}</p>
+            </div>
+            <div>
+                <p>CPF/CNPJ: {{ client.documento }}</p>
+                <p>Telefone Residencial: {{ client.telefone_residencial }}</p>
+            </div>
+            <div>
+                <p>CEP: {{ client.cep }}</p>
+                <p>Telefone Celular: {{ client.telefone }}</p>
+            </div>
+        </div>
+
+        <a href="{% url 'cadastro_veiculo' %}?documento={{ client.documento }}" class="btn-cadastrar-veiculo">
+            Cadastrar Novo Veículo
         </a>
-    </div>
 
-    <div class="info-cliente">
-        <div>
-            <p>Nome cliente: {{client.nome}}</p>
-            <p>Email: {{client.email}}</p>
+        <div class="secao-veiculo">
+            <h3>Veículos do cliente</h3>
+        
+            {% if vehicles %}
+                {% for vehicle in vehicles %}
+                    <div class="container-veiculo">
+                        <p><strong>Tipo do veículo:</strong> {{ vehicle.tipo }}</p>
+                        <p><strong>Placa do veículo:</strong> {{ vehicle.placa }}</p>
+                        <p><strong>Marca:</strong> {{ vehicle.marca }}</p>
+                        <p><strong>Modelo:</strong> {{ vehicle.modelo }}</p>
+                        <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="btn-primary">Editar</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Não há veículos cadastrados para este cliente.</p>
+            {% endif %}
         </div>
-        <div>
-            <p>CPF/CNPJ: {{client.documento}}</p>
-            <p>Telefone Residencial: {{client.telefone_residencial}}</p>
-        </div>
-        <div>
-            <p>CEP: {{client.cep}}</p>
-            <p>Telefone Celular: {{client.telefone}}</p>
-        </div>
-    </div>
-
-    <a href="{% url 'cadastro_veiculo' %}?documento={{ client.documento }}" class="btn btn-success">
-        Cadastrar Novo Veículo
-    </a>
-      
-
-    <div class="secao-veiculo">
-        <h3>Veículos do cliente</h3>
-    
-        {% if vehicles %}
-            {% for vehicle in vehicles %}
-                <div class="container-veiculo">
-                    <p><strong>Tipo do veículo:</strong> {{ vehicle.tipo }}</p>
-                    <p><strong>Placa do veículo:</strong> {{ vehicle.placa }}</p>
-                    <p><strong>Marca:</strong> {{ vehicle.marca }}</p>
-                    <p><strong>Modelo:</strong> {{ vehicle.modelo }}</p>
-                    <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-primary">Editar</a>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>Não há veículos cadastrados para este cliente.</p>
-        {% endif %}
     </div>
 </body>
 </html>

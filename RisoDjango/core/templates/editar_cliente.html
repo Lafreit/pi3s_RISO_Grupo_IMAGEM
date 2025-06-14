@@ -5,61 +5,107 @@
 {% block content %}
 <style>
   body {
-    background-color: #262B31 !important; 
-    height: 100% !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    background-color: #262B31;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  
-  .container{
-    background-color: #F1F5F4 !important;
-    padding: 30px !important;
-    border-radius: 10px !important;
-    box-shadow: 0 0 10px #000 !important;
-    height: 120vh !important;
+
+  .container {
+    background-color: #F1F5F4;
+    padding: 35px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 550px;
+    margin: 0;
   }
-  
+
+  h2 {
+    color: #2C4158;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  label {
+    font-weight: 600;
+    color: #262B31;
+  }
+
+  .form-control {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 10px 12px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
   .form-control::placeholder {
-    color: #aaa !important;
+    color: #aaa;
   }
- </style>
-<div class="container py-5">
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    text-decoration: none;
+  }
+
+  .btn-success {
+    background-color: #2C4158;
+  }
+  .btn-success:hover {
+    background-color: #22354a;
+  }
+
+  .btn-secondary {
+    background-color: #46627f;
+  }
+  .btn-secondary:hover {
+    background-color: #324a5e;
+  }
+
+</style>
+
+<div class="container">
   <h2>Editar Cliente</h2>
 
   {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
+    <div class="alert alert-danger text-center" role="alert">{{ error }}</div>
+  {% else %}
+    <div style="height: 48px;"></div>
   {% endif %}
 
   <form method="POST">
     {% csrf_token %}
     <input type="hidden" name="documento" value="{{ client.documento }}">
 
-    <div class="mb-3">
-      <label for="nome">Nome</label>
-      <input type="text" name="nome" value="{{ client.nome }}" class="form-control" required>
-    </div>
+    <label for="nome">Nome / Razão Social</label>
+    <input type="text" name="nome" value="{{ client.nome }}" class="form-control" required placeholder="Digite o nome da Empresa ou do Cliente aqui">
 
-    <div class="mb-3">
-      <label for="cep">CEP</label>
-      <input type="text" name="cep" value="{{ client.cep }}" class="form-control" required>
-    </div>
+    <label for="cep">CEP</label>
+    <input type="text" name="cep" value="{{ client.cep }}" class="form-control" required placeholder="CEP do Cliente">
 
-    <div class="mb-3">
-      <label for="email">Email</label>
-      <input type="email" name="email" value="{{ client.email }}" class="form-control" required>
-    </div>
+    <label for="email">Email</label>
+    <input type="email" name="email" value="{{ client.email }}" class="form-control" required placeholder="cliente@cliente.com">
 
-    <div class="mb-3">
-      <label for="telefone">Telefone</label>
-      <input type="text" name="telefone" value="{{ client.telefone }}" class="form-control">
-    </div>
+    <label for="telefone">Telefone</label>
+    <input type="text" name="telefone" value="{{ client.telefone }}" class="form-control" placeholder="(19) 99999-9999">
 
-    <div class="mb-3">
-      <label for="telefone_residencial">Telefone Residencial</label>
-      <input type="text" name="telefone_residencial" value="{{ client.telefone_residencial }}" class="form-control">
-    </div>
+    <label for="telefone_residencial">Telefone Residencial</label>
+    <input type="text" name="telefone_residencial" value="{{ client.telefone_residencial }}" class="form-control" placeholder="(19) 12345-6789">
 
     <button type="submit" class="btn btn-success">Salvar Alterações</button>
     <a href="{% url 'listar_clientes' %}" class="btn btn-secondary">Cancelar</a>

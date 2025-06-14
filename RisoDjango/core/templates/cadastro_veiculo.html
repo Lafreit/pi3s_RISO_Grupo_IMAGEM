@@ -1,33 +1,80 @@
-<form method="POST">
+<style>
+  body {
+    background-color: #262B31;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    background-color: #F1F5F4;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 550px;
+  }
+
+  label {
+    font-weight: 600;
+    color: #262B31;
+    margin-top: 15px;
+    display: block;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-top: 5px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+</style>
+
+<div class="container">
+  <h2>Cadastro de Veículo</h2>
+  <form method="POST">
     {% csrf_token %}
-  
-    <label>Tipo:</label>
-    <input type="text" name="tipo" required>
-  
-    <label>Placa:</label>
-    <input type="text" name="placa" required>
-  
-    <label>Marca:</label>
-    <input type="text" name="marca" required>
-  
-    <label>Modelo:</label>
-    <input type="text" name="modelo" required>
-  
-    <label>Ano:</label>
-    <input type="number" name="ano">
-  
-    <label>Quilometragem:</label>
-    <input type="number" name="quilometragem">
-  
-    <label>Cor:</label>
-    <input type="text" name="cor">
-  
-    <label>Observações:</label>
-    <textarea name="observacoes"></textarea>
-  
-    <!-- Campo oculto com documento do cliente -->
+
+    <label for="tipo">Tipo:</label>
+    <input type="text" id="tipo" name="tipo" required>
+
+    <label for="placa">Placa:</label>
+    <input type="text" id="placa" name="placa" required>
+
+    <label for="marca">Marca:</label>
+    <input type="text" id="marca" name="marca" required>
+
+    <label for="modelo">Modelo:</label>
+    <input type="text" id="modelo" name="modelo" required>
+
+    <label for="ano">Ano:</label>
+    <input type="number" id="ano" name="ano">
+
+    <label for="quilometragem">Quilometragem:</label>
+    <input type="number" id="quilometragem" name="quilometragem">
+
+    <label for="cor">Cor:</label>
+    <input type="text" id="cor" name="cor">
+
+    <label for="observacoes">Observações:</label>
+    <textarea id="observacoes" name="observacoes"></textarea>
+
     <input type="hidden" name="documento_cliente" value="{{ documento_cliente }}">
-  
-    <button type="submit">Cadastrar Veículo</button>
+
+    <button type="submit" class="btn btn-success mt-4">Cadastrar Veículo</button>
+    <a href="{% url 'listar_veiculos' %}" class="btn btn-secondary mt-2">Cancelar</a>
   </form>
-  
+</div>

@@ -1,115 +1,127 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}Cadastro de Clientes{% endblock %}
+{% block title %}Editar Cliente{% endblock %}
 
 {% block content %}
 <style>
-  .container {
-    height: 120vh;
-  }
   body {
     background-color: #262B31;
-    height: 100%;
+    height: 100vh;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .cadastro_cliente-container {
-    background-color: #F1F5F4;
-    padding: 30px;
+  .container {
+    background-color: #2C4158; /* azul escuro container */
+    padding: 35px 40px;
     border-radius: 10px;
-    box-shadow: 0 0 10px #000;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 550px;
+    margin: 0;
+    color: #F1F5F4; /* texto claro */
+  }
+
+  h2 {
+    color: #F1F5F4; /* título claro */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  label {
+    font-weight: 600;
+    color: #F1F5F4; /* labels claros */
+  }
+
+  .form-control {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 10px 12px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    background-color: #405973; /* fundo azul mais claro para inputs */
+    color: #F1F5F4;
+    border: 1px solid #567A9F;
   }
 
   .form-control::placeholder {
-    color: #aaa;
+    color: #bbb;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    text-decoration: none;
+  }
+
+  .btn-success {
+    background-color: #B6202A; /* botão vermelho igual cadastro veículo */
+  }
+  .btn-success:hover {
+    background-color: #8a181f;
+  }
+
+  .btn-secondary {
+    background-color: #46627f; /* azul claro para cancelar */
+  }
+  .btn-secondary:hover {
+    background-color: #324a5e;
+  }
+
+  .alert {
+    background-color: #B6202A;
+    color: white;
+    font-weight: 700;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
   }
 </style>
 
-<div class="container d-flex justify-content-center align-items-center">
-  <div class="col-md-6 d-flex align-items-center">
-    <div class="cadastro_cliente-container w-100">
-      <h2 class="text-center mb-1 fs-2">Cadastro de Clientes</h2>
+<div class="container">
+  <h2>Editar Cliente</h2>
 
-      <!-- Área de erro -->
-      <div class="error-box">
-        {% if error %}
-          <div class="alert alert-danger text-center font-weight-bold" role="alert">
-            {{ error }}
-          </div>
-        {% else %}
-          <div style="height: 48px;"></div>
-        {% endif %}
-      </div>
+  {% if error %}
+    <div class="alert">{{ error }}</div>
+  {% else %}
+    <div style="height: 48px;"></div>
+  {% endif %}
 
-      <form method="POST">
-        {% csrf_token %}
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="documento" value="{{ client.documento }}">
 
-        <div class="mb-3">
-          <label class="form-label">NOME/RAZÃO SOCIAL</label>
-          <input value="{{ data.nome | default:'' }}" name="nome" type="text"
-                 class="form-control"
-                 placeholder="Digite o nome da Empresa ou do Cliente aqui" required>
-        </div>
+    <label for="nome">Nome / Razão Social</label>
+    <input type="text" name="nome" value="{{ client.nome }}" class="form-control" required placeholder="Digite o nome da Empresa ou do Cliente aqui">
 
-        <div class="grid grid-row-2">
-          <div class="form-group col-span-6">
-            <label class="form-label">CPF/CNPJ</label>
-            <input value="{{ data.documento | default:'' }}" name="documento" type="text"
-                   class="form-control"
-                   placeholder="Exemplo: 123.456.789-00"
-                   oninput="formatDocument(this)" required>
-          </div>
+    <label for="cep">CEP</label>
+    <input type="text" name="cep" value="{{ client.cep }}" class="form-control" required placeholder="CEP do Cliente">
 
-          <div class="form-group col-span-6">
-            <label class="form-label">CEP</label>
-            <input value="{{ data.cep | default:'' }}" name="cep" type="text"
-                   class="form-control"
-                   placeholder="CEP do Cliente"
-                   oninput="formatCEP(this)" required>
-          </div>
-        </div>
+    <label for="email">Email</label>
+    <input type="email" name="email" value="{{ client.email }}" class="form-control" required placeholder="cliente@cliente.com">
 
-        <div class="mb-3">
-          <label class="form-label">EMAIL</label>
-          <input value="{{ data.email | default:'' }}" name="email" type="text"
-                 class="form-control"
-                 placeholder="cliente@cliente.com" required>
-        </div>
+    <label for="telefone">Telefone</label>
+    <input type="text" name="telefone" value="{{ client.telefone }}" class="form-control" placeholder="(19) 99999-9999">
 
-        <div class="mb-3">
-          <label class="form-label">TELEFONE</label>
-          <input value="{{ data.telefone | default:'' }}" name="telefone" type="text"
-                 class="form-control"
-                 placeholder="(19) 99999-9999"
-                 oninput="formatPhone(this)" required>
-        </div>
+    <label for="telefone_residencial">Telefone Residencial</label>
+    <input type="text" name="telefone_residencial" value="{{ client.telefone_residencial }}" class="form-control" placeholder="(19) 12345-6789">
 
-        <div class="mb-3">
-          <label class="form-label">TELEFONE RESIDENCIAL</label>
-          <input value="{{ data.telefone_residencial | default:'' }}" name="telefone_residencial" type="text"
-                 class="form-control"
-                 placeholder="(19) 12345-6789"
-                 oninput="formatPhone(this)">
-        </div>
-
-        <div class="text-center mb-3">
-          <button type="submit" class="btn text-white" style="background-color: #2C4158; width: 100%;">Cadastrar Cliente</button>
-        </div>
-      
-        <div class="text-center mb-3">
-          <a href="{% url 'listar_clientes' %}" class="btn text-white" style="background-color: #B6202A; width: 100%;">Cancelar Cadastro</a>
-        </div>
-
-      </form>
-    </div>
-  </div>
+    <button type="submit" class="btn btn-success">Salvar Alterações</button>
+    <a href="{% url 'listar_clientes' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script src="{% static 'utils/InputMaskScript.js' %}"></script>
 {% endblock %}
