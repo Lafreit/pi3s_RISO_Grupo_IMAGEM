@@ -6,6 +6,7 @@ from core.forms import LoginForm
 from .services import user_services, client_services , vehicles_services
 from core.services.client_services import get_db
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -37,8 +38,6 @@ def logout(request):
 def dashboard(request):
     return render(request, 'dashboard.html')
 
-from django.urls import reverse
-from django.http import HttpResponseRedirect
 
 @login_required
 def cadastro_cliente(request):
@@ -53,12 +52,17 @@ def cadastro_cliente(request):
         }
         try:
             client_services.create_client(data)
-            return render(request, 'cadastro_cliente.html', {'success': True, 'data': data})
+
+            return redirect(f"{reverse('vizualizar_cliente')}?documento={data['documento']}")
+        
         except Exception as e:
-            return render(request, 'cadastro_cliente.html', {'success': False, 'error': str(e), 'data': data})
+            return render(request, 'cadastro_cliente.html', {
+                'success': False,
+                'error': str(e),
+                'data': data
+            })
     else:
         return render(request, 'cadastro_cliente.html', {'success': False})
-
 
 @login_required
 def listar_clientes(request):
@@ -127,8 +131,7 @@ def vizualizar_cliente(request):
     if not client:
         return redirect('listar_clientes')
 
-    # Buscar veículos vinculados a esse cliente
-    vehicles = vehicles_services.list_vehicles_by_documento(documento)  # método que vamos criar
+    vehicles = vehicles_services.list_vehicles_by_documento(documento)
 
     return render(request, 'vizualizar_cliente.html', {
         'client': client,
@@ -138,7 +141,7 @@ def vizualizar_cliente(request):
 
 @login_required
 def cadastro_veiculo(request):
-    documento_cliente = request.GET.get('documento')  # pega o documento do cliente na URL
+    documento_cliente = request.GET.get('documento')
 
     if request.method == 'POST':
         data = {
@@ -159,11 +162,8 @@ def cadastro_veiculo(request):
             return render(request, 'cadastro_veiculo.html', {'error': str(e), 'data': data})
 
     else:
-        # Quando for GET, já envia o documento do cliente para o formulário
         return render(request, 'cadastro_veiculo.html', {'documento_cliente': documento_cliente})
 
-
-from django.urls import reverse
 
 @login_required
 def editar_veiculo(request):
