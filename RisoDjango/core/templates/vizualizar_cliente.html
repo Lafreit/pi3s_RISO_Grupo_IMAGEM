@@ -119,16 +119,27 @@
         </div>
     </div>
 
-    <div class="secao-veiculo">
-        <div class="container-veiculo">
-            <h3>Veículo do cliente</h3>
-            <p>Tipo do veículo</p>
-            <p>Placa do veículo</p>
-            <p>Marca</p>
-            <p>Modelo</p>
-            <button>Editar</button>
-        </div>
-    </div>
+    <a href="{% url 'cadastro_veiculo' %}?documento={{ client.documento }}" class="btn btn-success">
+        Cadastrar Novo Veículo
+    </a>
+      
 
+    <div class="secao-veiculo">
+        <h3>Veículos do cliente</h3>
+    
+        {% if vehicles %}
+            {% for vehicle in vehicles %}
+                <div class="container-veiculo">
+                    <p><strong>Tipo do veículo:</strong> {{ vehicle.tipo }}</p>
+                    <p><strong>Placa do veículo:</strong> {{ vehicle.placa }}</p>
+                    <p><strong>Marca:</strong> {{ vehicle.marca }}</p>
+                    <p><strong>Modelo:</strong> {{ vehicle.modelo }}</p>
+                    <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-primary">Editar</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Não há veículos cadastrados para este cliente.</p>
+        {% endif %}
+    </div>
 </body>
 </html>

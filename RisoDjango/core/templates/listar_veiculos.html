@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lista de Veículos{% endblock %}
+
+{% block content %}
+<h2>Lista de Veículos</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>Placa</th>
+      <th>Marca</th>
+      <th>Modelo</th>
+      <th>Ano</th>
+      <th>Quilometragem</th>
+      <th>Cor</th>
+      <th>Observações</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for vehicle in vehicles %}
+    <tr>
+      <td>{{ vehicle.tipo }}</td>
+      <td>{{ vehicle.placa }}</td>
+      <td>{{ vehicle.marca }}</td>
+      <td>{{ vehicle.modelo }}</td>
+      <td>{{ vehicle.ano }}</td>
+      <td>{{ vehicle.quilometragem }}</td>
+      <td>{{ vehicle.cor }}</td>
+      <td>{{ vehicle.observacoes }}</td>
+      <td>
+        <a href="{% url 'vizualizar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm btn-info me-2" title="Visualizar">
+          <i class="fas fa-eye"></i>
+        </a>
+        <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm btn-warning me-2" title="Editar">
+          <i class="fas fa-edit"></i>
+        </a>
+      
+        <form action="{% url 'excluir_veiculo' %}" method="POST" class="d-inline" onsubmit="return confirm('Deseja realmente excluir este veículo?');">
+          {% csrf_token %}
+          <input type="hidden" name="placa" value="{{ vehicle.placa }}">
+          <button type="submit" class="btn btn-sm btn-danger" title="Excluir">
+            <i class="fas fa-trash"></i>
+          </button>
+        </form>
+      </td>         
+    </tr>
+    {% empty %}
+    <tr><td colspan="9">Nenhum veículo cadastrado.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'cadastro_veiculo' %}" class="btn btn-success">Cadastrar Novo Veículo</a>
+{% endblock %}

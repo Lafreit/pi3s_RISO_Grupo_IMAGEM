@@ -1,0 +1,25 @@
+<h2>Detalhes do Veículo</h2>
+
+<p><strong>Tipo:</strong> {{ vehicle.tipo }}</p>
+<p><strong>Placa:</strong> {{ vehicle.placa }}</p>
+<p><strong>Marca:</strong> {{ vehicle.marca }}</p>
+<p><strong>Modelo:</strong> {{ vehicle.modelo }}</p>
+<p><strong>Ano:</strong> {{ vehicle.ano }}</p>
+<p><strong>Quilometragem:</strong> {{ vehicle.quilometragem }}</p>
+<p><strong>Cor:</strong> {{ vehicle.cor }}</p>
+<p><strong>Observações:</strong> {{ vehicle.observacoes }}</p>
+
+<hr>
+
+{% if cliente %}
+  <h3>Dono do Veículo</h3>
+  <p><strong>Nome / Razão Social:</strong> {{ cliente.nome }}</p>
+  <p><strong>Documento (CPF/CNPJ):</strong> {{ cliente.documento }}</p>
+  <p><strong>Email:</strong> {{ cliente.email }}</p>
+  <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
+  <a href="{% url 'editar_cliente' %}?documento={{ cliente.documento }}" class="btn btn-warning">
+    Editar Cliente
+  </a>
+{% else %}
+  <p><em>Cliente vinculado não encontrado.</em></p>
+{% endif %}

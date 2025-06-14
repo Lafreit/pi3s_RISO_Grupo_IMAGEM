@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import cadastro_cliente, login, logout, listar_clientes, index, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente
+from core.views import cadastro_cliente, login, logout, listar_clientes, index, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente, cadastro_veiculo, editar_veiculo, listar_veiculos, excluir_veiculo, vizualizar_veiculo
 
 
 
@@ -16,10 +16,11 @@ urlpatterns = [
     path('listar-usuarios/', listar_clientes, name='listar_usuarios'),
     path('editar-usuarios/<int:user_id>/', editar_cliente, name='editar_usuarios'),
     path('deletar-usuarios/<int:user_id>/', editar_cliente, name='deletar_usuarios'),
-    path('cadastro-veiculo/', cadastro_cliente, name='cadastro_veiculo'),
-    path('listar-veiculos/', listar_clientes, name='listar_veiculos'),
-    path('editar-veiculos/<int:vehicle_id>/', editar_cliente, name='editar_veiculos'),
-    path('deletar-veiculos/<int:vehicle_id>/', editar_cliente, name='deletar_veiculos'),
+    path("cadastro_veiculo/", cadastro_veiculo, name="cadastro_veiculo"),
+    path('veiculos/', listar_veiculos, name='listar_veiculos'),
+    path('editar_veiculo/', editar_veiculo, name='editar_veiculo'),
+    path('excluir_veiculo/', excluir_veiculo, name='excluir_veiculo'),
+    path('vizualizar_veiculo/', vizualizar_veiculo, name='vizualizar_veiculo'),
     path('cadastro-servico/', cadastro_cliente, name='cadastro_servico'),
     path('listar-servicos/', listar_clientes, name='listar_servicos'),
     path('editar-servicos/<int:service_id>/', editar_cliente, name='editar_servicos'),

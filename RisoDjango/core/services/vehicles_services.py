@@ -6,31 +6,29 @@ def get_db():
     mongo = MongoDBConnection(db_name=db_name)
     return mongo.get_db()
 
+
 def register_vehicle(vehicle_data):
     if not vehicle_exists(vehicle_data.get("placa")):
-        tipo = vehicle_data.get("tipo", "carro")
-        placa = vehicle_data.get("placa")
-        marca = vehicle_data.get("marca")
-        modelo = vehicle_data.get("modelo")
-        ano = vehicle_data.get("ano")
-        kilometragem = vehicle_data.get("quilometragem", 0)
-        cor = vehicle_data.get("cor", "não especificada")
-        observacoes = vehicle_data.get("observacoes", "")
-
         vehicle = {
-            "tipo": tipo,
-            "placa": placa,
-            "marca": marca,
-            "modelo": modelo,
-            "ano": ano,
-            "quilometragem": kilometragem,
-            "cor": cor,
-            "observacoes": observacoes
+            "tipo": vehicle_data.get("tipo", "carro"),
+            "placa": vehicle_data.get("placa"),
+            "marca": vehicle_data.get("marca"),
+            "modelo": vehicle_data.get("modelo"),
+            "ano": vehicle_data.get("ano"),
+            "quilometragem": vehicle_data.get("quilometragem", 0),
+            "cor": vehicle_data.get("cor", "não especificada"),
+            "observacoes": vehicle_data.get("observacoes", ""),
+            "documento_cliente": vehicle_data.get("documento_cliente")  # <-- vínculo
         }
 
         get_db()["vehicles"].insert_one(vehicle)
         return True
     return False
+
+def list_vehicles_by_documento(documento_cliente):
+    vehicles = get_db()["vehicles"].find({"documento_cliente": documento_cliente})
+    return list(vehicles)
+
 
 def get_vehicle(placa):
     vehicle = get_db()["vehicles"].find_one({"placa": placa})

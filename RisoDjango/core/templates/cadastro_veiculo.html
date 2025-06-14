@@ -1,0 +1,33 @@
+<form method="POST">
+    {% csrf_token %}
+  
+    <label>Tipo:</label>
+    <input type="text" name="tipo" required>
+  
+    <label>Placa:</label>
+    <input type="text" name="placa" required>
+  
+    <label>Marca:</label>
+    <input type="text" name="marca" required>
+  
+    <label>Modelo:</label>
+    <input type="text" name="modelo" required>
+  
+    <label>Ano:</label>
+    <input type="number" name="ano">
+  
+    <label>Quilometragem:</label>
+    <input type="number" name="quilometragem">
+  
+    <label>Cor:</label>
+    <input type="text" name="cor">
+  
+    <label>Observações:</label>
+    <textarea name="observacoes"></textarea>
+  
+    <!-- Campo oculto com documento do cliente -->
+    <input type="hidden" name="documento_cliente" value="{{ documento_cliente }}">
+  
+    <button type="submit">Cadastrar Veículo</button>
+  </form>
+  

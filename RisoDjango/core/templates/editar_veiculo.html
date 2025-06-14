@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Veículo{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Editar Veículo</h2>
+
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Tipo</label>
+            <input type="text" name="tipo" value="{{ vehicle.tipo }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Placa</label>
+            <input type="text" value="{{ vehicle.placa }}" class="form-control" disabled>
+        </div>
+
+        <div class="mb-3">
+            <label>Marca</label>
+            <input type="text" name="marca" value="{{ vehicle.marca }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Modelo</label>
+            <input type="text" name="modelo" value="{{ vehicle.modelo }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Ano</label>
+            <input type="number" name="ano" value="{{ vehicle.ano }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Quilometragem</label>
+            <input type="number" name="quilometragem" value="{{ vehicle.quilometragem }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Cor</label>
+            <input type="text" name="cor" value="{{ vehicle.cor }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Observações</label>
+            <textarea name="observacoes" class="form-control">{{ vehicle.observacoes }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'listar_veiculos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
