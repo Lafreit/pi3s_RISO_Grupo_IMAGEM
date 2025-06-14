@@ -1,5 +1,7 @@
 from .db_connection import MongoDBConnection
 import os
+from .client_services import get_client
+from .vehicles_services import get_vehicle
 
 def get_db():
     db_name = os.environ.get("MONGO_DB_NAME", "riso")
@@ -21,7 +23,15 @@ def register_service(service_data):
         status = service_data.get("status", "ativo")
         quantidadeRodas = service_data.get("quantidadeRodas", 1)
         prazo = service_data.get("prazo", 0)
-
+        try:
+            client_data = get_client(service_data.get("cliente", {}).get("documento", ""))
+            vehicle_data = get_vehicle(service_data.get("cliente", {}).get("veiculo", {}).get("placa", ""))
+        except Exception as e:
+            print(f"Error retrieving client or vehicle data: {e}")
+            return False
+        if not client_data or not vehicle_data:
+            print("Client or vehicle data not found.")
+            return False
         service = {
             "codigo": codigo,
             "tipo": tipo,
@@ -30,7 +40,9 @@ def register_service(service_data):
             "prazo": prazo,
             "quantidadeRodas": quantidadeRodas,
             "status": status,
-            "duracao": duracao
+            "duracao": duracao,
+            "cliente_documento": client_data.get("documento"),
+            "veiculo_placa": vehicle_data.get("placa"),
         }
 
         get_db()["servicos"].insert_one(service)
@@ -70,6 +82,10 @@ def show_services():
 
 def count_services():
     return get_db()["servicos"].count_documents({})
+
+def count_services_by_client_document(document):
+    count = get_db()["servicos"].count_documents({"cliente.documento": document})
+    return count
 
 def get_active_services():
     active_services = get_db()["servicos"].find({"status": "ativo"})
