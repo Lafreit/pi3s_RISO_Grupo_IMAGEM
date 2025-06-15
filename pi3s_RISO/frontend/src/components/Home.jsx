@@ -14,7 +14,7 @@ function Home() {
 
     const fetchServicos = async () => {
       try {
-        const data = await apiRequest('servicos/');
+        const data = await apiRequest('servicos/servicos/');
 
         if (data && Array.isArray(data)) {
           if (data.length > 0) {

@@ -1,0 +1,75 @@
+/* src/components/ClienteList.css */
+.cliente-list-container {
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 900px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.cliente-list-container h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 2em;
+}
+
+.cliente-list-container p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+.error-message {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.cliente-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.cliente-table th,
+.cliente-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.cliente-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.cliente-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.cliente-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.cliente-list-actions {
+    margin-bottom: 20px;
+    text-align: right; /* Alinha o botão à direita */
+}
+
+.add-cliente-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-cliente-button:hover {
+    background-color: #0056b3;
+}
