@@ -20,7 +20,7 @@ def validate_client_data(data, is_update=False):
         if not data.get(field):
             raise ValueError("Todos os campos obrigatórios devem ser preenchidos")
 
-    documento = data["documento"]
+    documento = replace_special_characters(data["documento"])
     if not is_update and client_exists(documento):
         raise ValueError("Cliente com este documento já existe")
 
@@ -50,24 +50,27 @@ def validate_client_data(data, is_update=False):
 
 def create_client(data):
     validate_client_data(data)
-
+    
     client = {
         "nome": data.get("nome"),
-        "documento": data.get("documento"),
-        "cep": data.get("cep"),
+        "documento": replace_special_characters(data.get("documento")),
+        "cep": replace_special_characters(data.get("cep")),
         "email": data.get("email"),
-        "telefone": data.get("telefone"),
-        "telefone_residencial": data.get("telefone_residencial")
+        "telefone": replace_special_characters(data.get("telefone")),
+        "telefone_residencial": replace_special_characters(data.get("telefone_residencial"))
     }
 
     get_db()["clients"].insert_one(client)
     return True
 
 def get_client(document):
+    print(f"Buscando cliente com documento: {document}")
+    document = replace_special_characters(document)
     client = get_db()["clients"].find_one({"documento": document})
     return client if client else None
 
 def update_client(document, new_data):
+    document = replace_special_characters(document)
     if not get_client(document):
         return False
 
@@ -89,6 +92,7 @@ def update_client(document, new_data):
     return result.modified_count > 0
 
 def delete_client(document):
+    document = replace_special_characters(document)
     result = get_db()["clients"].delete_one({"documento": document})
     return result.deleted_count > 0
 
@@ -100,4 +104,5 @@ def count_clients():
     return get_db()["clients"].count_documents({})
 
 def client_exists(document):
+    document = replace_special_characters(document)
     return get_db()["clients"].count_documents({"documento": document}) > 0
