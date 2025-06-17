@@ -8,7 +8,8 @@ from core.services.client_services import get_db
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from datetime import datetime
-
+from django.http import JsonResponse ## Vamos utilizar para criar os charts, acho que talvez com Charts.Js
+import core.services.utils as utils
 # Create your views here.
 
 """ def index(request):
@@ -37,7 +38,12 @@ def logout(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    kpi_data = utils.kpis()
+    
+    return render(request, 'dashboard.html', context={
+        'kpi_data': kpi_data,
+        'user': request.user.username
+    })
 
 
 @login_required

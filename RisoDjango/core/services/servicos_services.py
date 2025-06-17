@@ -130,7 +130,20 @@ def cancel_service(codigo):
     result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": {"status": "cancelado", "data_fechamento": datetime.now()}})
     return result.modified_count > 0
 
+def show_delayed_services():
+    today = datetime.now()
+    delayed_services = get_db()["servicos"].find({"status": "ativo", "prazo": {"$lt": today}})
+    return list(delayed_services)
 
+def get_next_due_service():
+    next_due_service = get_db()["servicos"].find_one({"status": "ativo", "prazo": {"$gt": datetime.now()}}, sort=[("prazo", 1)])
+    return next_due_service if next_due_service else None
+
+def get_month_service_count(start_date, end_date):
+    count = get_db()["servicos"].count_documents({
+        "data_inicio": {"$gte": start_date, "$lt": end_date}
+    })
+    return count
 
 
 
