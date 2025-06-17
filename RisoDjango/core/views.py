@@ -362,7 +362,7 @@ def editar_servico(request):
 
 @login_required
 def finalizar_servico(request):
-    codigo = request.POST.get('codigo')
+    codigo = request.GET.get('codigo')
     if not codigo:
         return redirect('listar_servicos')
 
@@ -372,7 +372,7 @@ def finalizar_servico(request):
 
     if request.method == 'POST':
         try:
-            servicos_services.finalizar_servico(codigo)
+            servicos_services.finish_service(codigo)
             return redirect('listar_servicos')
         except Exception as e:
             error = str(e)
@@ -421,13 +421,18 @@ def excluir_servico(request):
 
 @login_required
 def vizualizar_servico(request):
-    print("Vizualizar serviço chamado")
     codigo = request.GET.get('codigo')
     servico = servicos_services.get_service(codigo)
     if not servico:
         return redirect('listar_servicos')
+    status = servico.get('status', '').lower()
+    data_cancelamento = None
+    if status == 'cancelado':
+        data_cancelamento = servico.get('data_fechamento')
     return render(request, 'vizualizar_servico.html', {
         'servico': servico,
+        'status': status,
+        'data_cancelamento': data_cancelamento,
     })
 
 @login_required
@@ -435,6 +440,11 @@ def servicos_finalizados(request):
     finalizados = []
     finalizados = servicos_services.show_completed_services()
     return render(request, 'servicos_finalizados.html', {'services': finalizados})
+
+@login_required
+def visualizar_servicos_cancelados(request):
+    cancelados = servicos_services.show_canceled_services()
+    return render(request, 'servicos_cancelados.html', {'services': cancelados})
 
 def alterar_br_para_float(value):
     if isinstance(value, float):
