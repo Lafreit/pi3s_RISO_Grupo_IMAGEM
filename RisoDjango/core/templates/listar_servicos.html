@@ -19,15 +19,21 @@
   <div class="lista-container">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h3 class="mb-0" style="color: #2C4158; font-weight: bold;">📋 Lista de Serviços</h3>
+      <a href="{% url 'servicos_finalizados' %}" class="btn btn-success rounded-pill d-flex align-items-center" style="font-weight: bold; font-size: 1.1rem;">
+        <i class="fas fa-check-circle me-2"></i> Serviços Finalizados
+      </a>
     </div>
     <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
           <th>Tipo</th>
           <th>Código</th>
-          <th>Preço</th>
-          <th>Início</th>
-          <th>Prazo</th>
+          <th>Cliente</th>
+          <th>Documento Cliente</th>
+          <th>Veículo</th>
+          <th>Valor Unitário</th>
+          <th>Data de Início</th>
+          <th>Prazo Final</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -36,18 +42,27 @@
           <tr>
             <td>{{ service.tipo }}</td>
             <td>{{ service.codigo }}</td>
-            <td>{{ service.valor_unitario }}</td>
-            <td>{{ service.data_inicio }}</td>
-            <td>{{ service.prazo_final }}</td>
+            <td>{{ service.cliente.nome }}</td>
+            <td>{{ service.cliente.documento }}</td>
+            <td>{{ service.veiculo.modelo }} - {{ service.veiculo.placa }}</td>
+            <td>R$ {{ service.preco|floatformat:2 }}</td>
+            <td>{{ service.data_inicio|date:"d/m/Y" }}</td>
+            <td>{{ service.prazo|date:"d/m/Y" }}</td>
             <td>
               <div class="d-flex justify-content-center gap-2">
-                <a href="{% url 'editar_servico' %}?codigo={{ service.codigo }}" class="btn btn-sm btn-warning" title="Editar">
+                <a href="{% url 'editar_servico' %}?codigo={{ service.codigo }}" class="btn btn-sm btn-warning rounded-circle d-flex align-items-center justify-content-center" title="Editar" style="width: 36px; height: 36px; box-shadow: 0 2px 6px #0002;">
                   <i class="fas fa-edit"></i>
                 </a>
                 <form action="{% url 'excluir_servico' %}?codigo={{ service.codigo }}" method="POST" class="d-inline">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir o serviço {{ service.tipo_servico }}?');">
+                  <button type="submit" class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; box-shadow: 0 2px 6px #0002;" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir o serviço {{ service.tipo_servico }}?');">
                     <i class="fas fa-trash-alt"></i>
+                  </button>
+                </form>
+                <form action="{% url 'finalizar_servico' %}?codigo={{ service.codigo }}" method="POST" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-success rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; box-shadow: 0 2px 6px #0002;" title="Finalizar" onclick="return confirm('Deseja realmente finalizar o serviço {{ service.tipo }}?');">
+                    <i class="fas fa-check"></i>
                   </button>
                 </form>
               </div>

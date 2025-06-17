@@ -56,6 +56,16 @@
   .btn i {
     pointer-events: none;
   }
+
+  .btn-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px #0002;
+  }
 </style>
 
 <div class="container py-5">
@@ -91,16 +101,16 @@
             <td>{{ vehicle.observacoes }}</td>
             <td>
               <div class="d-flex justify-content-center gap-2">
-                <a href="{% url 'vizualizar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm btn-info" title="Visualizar">
+                <a href="{% url 'vizualizar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm btn-info rounded-circle d-flex align-items-center justify-content-center" title="Visualizar" style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; box-shadow: 0 2px 6px #0002; font-size: 1.1rem;">
                   <i class="fas fa-eye"></i>
                 </a>
-                <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm btn-warning" title="Editar">
+                <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm btn-warning rounded-circle d-flex align-items-center justify-content-center" title="Editar" style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; box-shadow: 0 2px 6px #0002; font-size: 1.1rem;">
                   <i class="fas fa-edit"></i>
                 </a>
                 <form action="{% url 'excluir_veiculo' %}" method="POST" class="d-inline" onsubmit="return confirm('Deseja realmente excluir este veículo?');">
                   {% csrf_token %}
                   <input type="hidden" name="placa" value="{{ vehicle.placa }}">
-                  <button type="submit" class="btn btn-sm btn-danger" title="Excluir">
+                  <button type="submit" class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center" title="Excluir" style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; box-shadow: 0 2px 6px #0002; font-size: 1.1rem;">
                     <i class="fas fa-trash"></i>
                   </button>
                 </form>
