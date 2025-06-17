@@ -97,11 +97,12 @@
     data: {
       labels: ['Atrasados', 'Próx. ao Prazo', 'Abertos'],
       datasets: [{
+        label: 'Serviços',
         data: [delayed, nextToDue, open],
         backgroundColor: [
-          '#dc3545', 
-          '#ffc107',  //Não sei como colocar transparente, ia ser bom
-          '#0d6efd'
+          'rgba(220,53,69,0.3)', 
+          'rgba(255,193,7,0.3)',  //Não sei como colocar transparente, ia ser bom
+          'rgba(13,110,253,0.3)' //Aprendiii, taca rgb neles
         ],
       }]
     },
