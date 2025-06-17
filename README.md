@@ -997,5 +997,5 @@ O Product Owner é o principal responsável por gerenciar e manter o Product Bac
 
 # FLUXO DE TELAS:
 
-![Diagrama do Product Backlog](Diagramas/fluxo_telas.svg)
+![Diagrama do Product Backlog](Diagramas/fluxo_telas.png)
 
