@@ -4,56 +4,94 @@
 
 {% block content %}
 <style>
-  body { background-color: #262B31; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; }
-  .container { background-color: #F1F5F4; padding: 35px 40px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.3); max-width: 600px; width: 100%; }
-  h2 { color: #2C4158; font-weight: bold; text-align: center; margin-bottom: 30px; }
+  body { background-color: #262B31; }
+  .editar-servico-container {
+    background-color: #F1F5F4;
+    border-radius: 10px;
+    padding: 30px 40px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    max-width: 600px;
+    margin: 40px auto;
+  }
+  .editar-servico-title {
+    color: #2C4158;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+  }
   label { font-weight: 600; color: #262B31; }
-  .form-control { border-radius: 6px; border: 1px solid #ccc; padding: 10px 12px; font-size: 1rem; margin-bottom: 15px; }
+  .form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px 12px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
   .form-control::placeholder { color: #aaa; }
-  .btn { display: block; width: 100%; padding: 12px 0; border-radius: 6px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; text-align: center; color: white; transition: background-color 0.3s ease; margin-top: 10px; text-decoration: none; }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    text-decoration: none;
+  }
   .btn-success { background-color: #2C4158; }
   .btn-success:hover { background-color: #22354a; }
-  .btn-secondary { background-color: #46627f; }
-  .btn-secondary:hover { background-color: #324a5e; }
+  .btn-secondary { background-color: #B6202A; }
+  .btn-secondary:hover { background-color: #8a181f; }
 </style>
 
-<div class="container">
-  <h2>Editar Serviço</h2>
+<div class="editar-servico-container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <a href="{% url 'listar_servicos' %}" class="btn btn-secondary rounded-circle d-flex align-items-center justify-content-center" title="Voltar" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; box-shadow: 0 2px 6px #0002; font-size: 1.3rem; padding: 0;">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <h2 class="editar-servico-title flex-grow-1">Editar Serviço</h2>
+  </div>
   {% if error %}
-    <div class="alert alert-danger text-center" role="alert">{{ error }}</div>
+    <div class="alert alert-danger text-center font-weight-bold" role="alert">{{ error }}</div>
   {% else %}
     <div style="height: 48px;"></div>
   {% endif %}
-  <form method="POST" >
+  <form method="POST">
     {% csrf_token %}
     <input type="hidden" name="id" value="{{ service.id }}">
 
-    <label for="tipo_servico">Tipo de Serviço</label>
-    <input type="text" name="tipo_servico" value="{{ service.tipo_servico }}" class="form-control" required>
+    <label for="tipo">Tipo de Serviço</label>
+    <input type="text" name="tipo" value="{{ service.tipo }}" class="form-control" required>
 
     <label for="codigo">Código</label>
     <input type="text" name="codigo" value="{{ service.codigo }}" class="form-control" required>
 
-    <label for="tempo_execucao">Tempo de Execução</label>
-    <input type="text" name="tempo_execucao" value="{{ service.tempo_execucao }}" class="form-control" required>
+    <label for="duracao">Tempo de Execução</label>
+    <input type="text" name="duracao" value="{{ service.duracao }}" class="form-control" required>
 
-    <label for="valor_unitario">Valor Unitário</label>
-    <input type="text" name="valor_unitario" value="{{ service.valor_unitario }}" class="form-control" required>
+    <label for="preco">Valor Unitário</label>
+    <input type="text" name="preco" value="{{ service.preco }}" class="form-control" required>
 
-    <label for="quantidade_rodas">Quantidade de Rodas</label>
-    <input type="text" name="quantidade_rodas" value="{{ service.quantidade_rodas }}" class="form-control" required>
+    <label for="quantidadeRodas">Quantidade de Rodas</label>
+    <input type="text" name="quantidadeRodas" value="{{ service.quantidadeRodas }}" class="form-control" required>
 
     <label for="data_inicio">Data de Início</label>
-    <input type="date" name="data_inicio" value="{{ service.data_inicio }}" class="form-control" required>
+    <input type="date" name="data_inicio" value="{{ service.data_inicio|date:'Y-m-d' }}" class="form-control" required>
 
-    <label for="prazo_final">Prazo Final</label>
-    <input type="date" name="prazo_final" value="{{ service.prazo_final }}" class="form-control" required>
+    <label for="prazo_execucao">Prazo Final</label>
+    <input type="date" name="prazo_execucao" value="{{ service.prazo_execucao|date:'Y-m-d' }}" class="form-control" required>
 
     <label for="descricao">Descrição</label>
     <textarea name="descricao" class="form-control" rows="3" required>{{ service.descricao }}</textarea>
 
-    <button type="submit" class="btn btn-success">Salvar Alterações</button>
-    <a href="{% url 'listar_servicos' %}" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-success rounded-pill" style="font-size: 1.1rem; margin-top: 18px;">Salvar Alterações</button>
+    <a href="{% url 'listar_servicos' %}" class="btn btn-secondary rounded-pill" style="font-size: 1.1rem;">Cancelar</a>
   </form>
 </div>
 {% endblock %}
