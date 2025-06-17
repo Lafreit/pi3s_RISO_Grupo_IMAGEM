@@ -995,3 +995,7 @@ Refinamento Contínuo do Backlog (Product Backlog Refinement): Em muitas metodol
 
 O Product Owner é o principal responsável por gerenciar e manter o Product Backlog. Ele é quem decide quais itens entram no backlog, qual a prioridade deles e quem garante que o backlog esteja claro e compreensível para a equipe de desenvolvimento. No entanto, a modificação do backlog é frequentemente um esforço colaborativo que envolve a equipe de desenvolvimento e outros stakeholders.
 
+# FLUXO DE TELAS:
+
+![Diagrama do Product Backlog](Diagramas/fluxo_telas.svg)
+
