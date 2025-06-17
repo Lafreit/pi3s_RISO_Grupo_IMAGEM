@@ -118,11 +118,11 @@ def get_service_by_type(tipo):
     service = get_db()["servicos"].find_one({"tipo": tipo})
     return service if service else None
 
-def finalizar_servico(codigo):
+def finish_service(codigo):
     result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": {"status": "finalizado", "data_fechamento": datetime.now()}})
     return result.modified_count > 0
 
-def cancelar_servico(codigo):
+def cancel_service(codigo):
     result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": {"status": "cancelado", "data_fechamento": datetime.now()}})
     return result.modified_count > 0
 
