@@ -5,15 +5,15 @@
 
 {% block content %}
   <div class="bg-[#F1F5F4] rounded-2xl shadow-2xl w-full max-w-4xl p-8 justify-center mx-auto mt-10">
+
     <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
       <a href="{% url 'listar_clientes' %}" class="bg-[#B6202A] hover:bg-[#8a181f] text-white font-bold py-2 px-6 rounded-lg transition">Voltar</a>
       <h1 class="text-3xl font-italic font-bold text-[#2C4158]">Cliente: {{ client.nome }}</h1>
       <a href="{% url 'editar_cliente' %}?documento={{ client.documento }}" class="bg-[#2C4158] hover:bg-[#22354a] text-white font-bold py-2 px-6 rounded-lg transition">Editar</a>
     </div>
 
-
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {% for label, info in client.items %}
+      {% for label, info in client.items %}
         <div class="bg-white rounded-xl shadow-lg p-6">
           <p class="text-gray-700 font-semibold mb-2">{{ label }}</p>
           <p class="text-gray-900">{{ info }}</p>
@@ -24,33 +24,41 @@
     <div class="mb-8">
       <h2 class="text-2xl font-bold text-[#2C4158] mb-4">Serviços</h2>
       <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-        <span class="text-gray-800 font-semibold">Quantidade de serviços: <span class="font-bold">{{ services|length }}</span></span>
-        <a href="{% url 'listar_servicos' %}?documento={{ client.documento }}" class="bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-4 rounded-lg transition">Ver Serviços</a>
+        <span class="text-gray-800 font-semibold">
+          Quantidade de serviços: <span class="font-bold">{{ services|length }}</span>
+        </span>
+        <a href="{% url 'listar_servicos' %}?documento={{ client.documento }}" class="bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-4 rounded-lg transition whitespace-nowrap">
+          Ver Serviços
+        </a>
       </div>
     </div>
 
-    <div class="mb-8">
-      <a href="{% url 'cadastro_veiculo' %}?documento={{ client.documento }}" class="bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-3 px-8 rounded-full transition inline-block">Cadastrar Novo Veículo</a>
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+      <h2 class="text-2xl font-bold text-[#2C4158]">Veículos do Cliente</h2>
+      <a href="{% url 'cadastro_veiculo' %}?documento={{ client.documento }}" class="flex items-center gap-2 bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-6 rounded-lg transition whitespace-nowrap">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Cadastrar Novo Veículo
+      </a>
     </div>
 
-    <div>
-      <h2 class="text-2xl font-bold text-[#2C4158] mb-4">Veículos do Cliente</h2>
-      <div class="flex overflow-x-auto space-x-6 snap-x snap-mandatory pb-4">
-        {% if vehicles %}
-          {% for vehicle in vehicles %}
-            <div class="bg-white rounded-xl shadow-lg p-6 min-w-[250px] snap-center">
-                <p class="text-gray-700 font-semibold">Tipo: <span class="text-gray-900 font-normal">{{ vehicle.tipo }}</span></p>
-                <p class="text-gray-700 font-semibold">Placa: <span class="text-gray-900 font-normal">{{ vehicle.placa }}</span></p>
-                <p class="text-gray-700 font-semibold">Marca: <span class="text-gray-900 font-normal">{{ vehicle.marca }}</span></p>
-                <p class="text-gray-700 font-semibold">Modelo: <span class="text-gray-900 font-normal">{{ vehicle.modelo }}</span></p>
-                <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="mt-4 block bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-4 rounded-lg transition">Editar</a>
-                <a href="{% url 'cadastro_servico' %}?documento={{ client.documento }}&placa={{ vehicle.placa }}" class="mt-4 block bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-4 rounded-lg transition">Abrir novo serviço</a>
-            </div>
-          {% endfor %}
-        {% else %}
-          <p class="text-white">Não há veículos cadastrados para este cliente.</p>
-        {% endif %}
-      </div>
+    <div class="flex overflow-x-auto space-x-6 snap-x snap-mandatory pb-4">
+      {% if vehicles %}
+        {% for vehicle in vehicles %}
+          <div class="bg-white rounded-xl shadow-lg p-6 min-w-[250px] snap-center">
+            <p class="text-gray-700 font-semibold">Tipo: <span class="text-gray-900 font-normal">{{ vehicle.tipo }}</span></p>
+            <p class="text-gray-700 font-semibold">Placa: <span class="text-gray-900 font-normal">{{ vehicle.placa }}</span></p>
+            <p class="text-gray-700 font-semibold">Marca: <span class="text-gray-900 font-normal">{{ vehicle.marca }}</span></p>
+            <p class="text-gray-700 font-semibold">Modelo: <span class="text-gray-900 font-normal">{{ vehicle.modelo }}</span></p>
+            <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="mt-4 block bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-4 rounded-lg transition">Editar</a>
+            <a href="{% url 'cadastro_servico' %}?documento={{ client.documento }}&placa={{ vehicle.placa }}" class="mt-4 block bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-4 rounded-lg transition">Abrir novo serviço</a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-gray-700 font-semibold">Não há veículos cadastrados para este cliente.</p>
+      {% endif %}
     </div>
+
   </div>
 {% endblock %}

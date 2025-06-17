@@ -1,114 +1,76 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Editar Cliente{% endblock %}
 
 {% block content %}
-<style>
-  body {
-    background-color: #262B31;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+<div class="min-h-screen flex items-center justify-center py-12 px-4">
+  <div class="bg-[#F1F5F4] p-10 rounded-2xl shadow-2xl w-full max-w-2xl">
+    <h2 class="text-3xl font-bold text-[#2C4158] text-center mb-6">Editar Cliente</h2>
 
-  .container {
-    background-color: #F1F5F4;
-    padding: 35px 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    width: 100%;
-    max-width: 550px;
-    margin: 0;
-  }
+    {% if error %}
+      <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-center font-semibold mb-6">
+        {{ error }}
+      </div>
+    {% endif %}
 
-  h2 {
-    color: #2C4158;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 30px;
-  }
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+      <input type="hidden" name="documento" value="{{ client.documento }}">
 
-  label {
-    font-weight: 600;
-    color: #262B31;
-  }
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">Nome / Razão Social</label>
+        <input type="text" name="nome" value="{{ client.nome }}" required
+               placeholder="Digite o nome da Empresa ou do Cliente aqui"
+               class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2C4158]">
+      </div>
 
-  .form-control {
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    padding: 10px 12px;
-    font-size: 1rem;
-    margin-bottom: 15px;
-  }
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">CEP</label>
+        <input type="text" name="cep" value="{{ client.cep }}" required
+               placeholder="CEP do Cliente"
+               oninput="formatCEP(this)"
+               class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2C4158]">
+      </div>
 
-  .form-control::placeholder {
-    color: #aaa;
-  }
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">Email</label>
+        <input type="email" name="email" value="{{ client.email }}" required
+               placeholder="cliente@cliente.com"
+               class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2C4158]">
+      </div>
 
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 12px 0;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    color: white;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    text-decoration: none;
-  }
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">Telefone</label>
+        <input type="text" name="telefone" value="{{ client.telefone }}"
+               placeholder="(19) 99999-9999"
+               oninput="formatPhone(this)"
+               class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2C4158]">
+      </div>
 
-  .btn-success {
-    background-color: #2C4158;
-  }
-  .btn-success:hover {
-    background-color: #22354a;
-  }
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">Telefone Residencial</label>
+        <input type="text" name="telefone_residencial" value="{{ client.telefone_residencial }}"
+               placeholder="(19) 12345-6789"
+               oninput="formatPhone(this)"
+               class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2C4158]">
+      </div>
 
-  .btn-secondary {
-    background-color: #46627f;
-  }
-  .btn-secondary:hover {
-    background-color: #324a5e;
-  }
-
-</style>
-
-<div class="container">
-  <h2>Editar Cliente</h2>
-
-  {% if error %}
-    <div class="alert alert-danger text-center" role="alert">{{ error }}</div>
-  {% else %}
-    <div style="height: 48px;"></div>
-  {% endif %}
-
-  <form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="documento" value="{{ client.documento }}">
-
-    <label for="nome">Nome / Razão Social</label>
-    <input type="text" name="nome" value="{{ client.nome }}" class="form-control" required placeholder="Digite o nome da Empresa ou do Cliente aqui">
-
-    <label for="cep">CEP</label>
-    <input type="text" name="cep" value="{{ client.cep }}" class="form-control" required placeholder="CEP do Cliente">
-
-    <label for="email">Email</label>
-    <input type="email" name="email" value="{{ client.email }}" class="form-control" required placeholder="cliente@cliente.com">
-
-    <label for="telefone">Telefone</label>
-    <input type="text" name="telefone" value="{{ client.telefone }}" class="form-control" placeholder="(19) 99999-9999">
-
-    <label for="telefone_residencial">Telefone Residencial</label>
-    <input type="text" name="telefone_residencial" value="{{ client.telefone_residencial }}" class="form-control" placeholder="(19) 12345-6789">
-
-    <button type="submit" class="btn btn-success">Salvar Alterações</button>
-    <a href="{% url 'listar_clientes' %}" class="btn btn-secondary">Cancelar</a>
-  </form>
+      <div class="flex flex-col md:flex-row justify-between gap-4 mt-6">
+        <button type="submit"
+                class="w-full bg-[#2C4158] hover:bg-[#22354a] text-white font-bold py-2 px-4 rounded-lg transition">
+          Salvar Alterações
+        </button>
+        <a href="{% url 'listar_clientes' %}"
+           class="w-full bg-[#B6202A] hover:bg-[#8a181f] text-white font-bold py-2 px-4 rounded-lg text-center transition">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'utils/InputMaskScript.js' %}"></script>
 {% endblock %}

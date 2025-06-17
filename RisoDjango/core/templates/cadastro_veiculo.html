@@ -3,98 +3,84 @@
 
 {% block title %}Cadastro de Veículo{% endblock %}
 
-{% block head %}
-<link rel="stylesheet" href="{% static 'css/cadastro_cliente.css' %}">
-{% endblock %}
-
 {% block content %}
-<style>
-  body {
-    background-color: #262B31;
-    height: 100%;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+<div class="min-h-screen flex items-center justify-center py-12 px-4">
+  <div class="bg-[#F1F5F4] p-10 rounded-2xl shadow-2xl w-full max-w-2xl">
+    <h2 class="text-3xl font-bold text-[#2C4158] text-center mb-6">Cadastro de Veículo</h2>
 
-  .cadastro_cliente-container {
-    background-color: #F1F5F4;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #000;
-  }
+    {% if error %}
+      <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-center font-semibold mb-6">
+        {{ error }}
+      </div>
+    {% endif %}
 
-  .form-control::placeholder {
-    color: #aaa;
-  }
-</style>
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+      <input type="hidden" name="documento_cliente" value="{{ documento_cliente }}">
 
-<div class="d-flex text-slate-800 justify-content-center align-items-center">
-  <div class="col-md-6 d-flex align-items-center">
-    <div class="cadastro_cliente-container w-full">
-      <h2 class="text-center mb-1 fs-2">Cadastro de Veiculo</h2>
-
-      <!-- Área de erro -->
-      <div class="error-box">
-        {% if error %}
-          <div class="alert alert-danger text-center font-weight-bold" role="alert">
-            {{ error }}
-          </div>
-        {% else %}
-          <div style="height: 48px;"></div>
-        {% endif %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="tipo" class="block text-gray-900 font-semibold mb-1">Tipo</label>
+          <input id="tipo" type="text" name="tipo" value="{{ data.tipo|default:'' }}" required
+                 placeholder="Ex: Carro, Moto, Caminhão"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">
+        </div>
+        <div>
+          <label for="placa" class="block text-gray-900 font-semibold mb-1">Placa</label>
+          <input id="placa" type="text" name="placa" value="{{ data.placa|default:'' }}" required
+                 placeholder="Ex: ABC-1234"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">
+        </div>
+        <div>
+          <label for="marca" class="block text-gray-900 font-semibold mb-1">Marca</label>
+          <input id="marca" type="text" name="marca" value="{{ data.marca|default:'' }}" required
+                 placeholder="Ex: Toyota, Honda"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">
+        </div>
+        <div>
+          <label for="modelo" class="block text-gray-900 font-semibold mb-1">Modelo</label>
+          <input id="modelo" type="text" name="modelo" value="{{ data.modelo|default:'' }}" required
+                 placeholder="Ex: Corolla, Civic"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">
+        </div>
+        <div>
+          <label for="ano" class="block text-gray-900 font-semibold mb-1">Ano</label>
+          <input id="ano" type="number" name="ano" value="{{ data.ano|default:'' }}"
+                 placeholder="Ex: 2022"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">
+        </div>
+        <div>
+          <label for="quilometragem" class="block text-gray-900 font-semibold mb-1">Quilometragem</label>
+          <input id="quilometragem" type="number" name="quilometragem" value="{{ data.quilometragem|default:'' }}"
+                 placeholder="Ex: 50000"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">
+        </div>
+        <div class="md:col-span-2">
+          <label for="cor" class="block text-gray-900 font-semibold mb-1">Cor</label>
+          <input id="cor" type="text" name="cor" value="{{ data.cor|default:'' }}"
+                 placeholder="Ex: Preto, Branco, Vermelho"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">
+        </div>
       </div>
 
-      <form method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="documento_cliente" value="{{ documento_cliente }}">
+      <div>
+        <label for="observacoes" class="block text-gray-900 font-semibold mb-1">Observações</label>
+        <textarea id="observacoes" name="observacoes" rows="3"
+                  placeholder="Anotações adicionais sobre o veículo"
+                  class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2C4158] bg-white text-gray-900">{{ data.observacoes|default:'' }}</textarea>
+      </div>
 
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="form-label">Tipo</label>
-            <input type="text" name="tipo" class="form-control" value="{{ data.tipo|default:'' }}" required>
-          </div>
-          <div>
-            <label class="form-label">Placa</label>
-            <input type="text" name="placa" class="form-control" value="{{ data.placa|default:'' }}" required>
-          </div>
-          <div>
-            <label class="form-label">Marca</label>
-            <input type="text" name="marca" class="form-control" value="{{ data.marca|default:'' }}" required>
-          </div>
-          <div>
-            <label class="form-label">Modelo</label>
-            <input type="text" name="modelo" class="form-control" value="{{ data.modelo|default:'' }}" required>
-          </div>
-          <div>
-            <label class="form-label">Ano</label>
-            <input type="number" name="ano" class="form-control" value="{{ data.ano|default:'' }}">
-          </div>
-          <div>
-            <label class="form-label">Quilometragem</label>
-            <input type="number" name="quilometragem" class="form-control" value="{{ data.quilometragem|default:'' }}">
-          </div>
-          <div>
-            <label class="form-label">Cor</label>
-            <input type="text" name="cor" class="form-control" value="{{ data.cor|default:'' }}">
-          </div>
-        </div>
-
-        <div class="mt-4">
-          <label class="form-label">Observações</label>
-          <textarea name="observacoes" class="form-control" rows="3">{{ data.observacoes|default:'' }}</textarea>
-        </div>
-
-        <div class="text-center mb-3 mt-4">
-          <button type="submit" class="btn text-white w-full" style="background-color: #2C4158;">Cadastrar Cliente</button>
-        </div>
-
-        <div class="text-center mb-3">
-          <a href="{% url 'listar_veiculos' %}" class="btn text-white w-full" style="background-color: #B6202A;">Cancelar Cadastro</a>
-        </div>
-      </form>
-    </div>
+      <div class="flex flex-col md:flex-row justify-between gap-4">
+        <button type="submit"
+                class="w-full bg-[#2C4158] hover:bg-[#22354a] text-white font-bold py-2 px-4 rounded-lg transition">
+          Cadastrar Veículo
+        </button>
+        <a href="{% url 'listar_veiculos' %}"
+           class="w-full bg-[#B6202A] hover:bg-[#8a181f] text-white font-bold py-2 px-4 rounded-lg text-center transition">
+          Cancelar Cadastro
+        </a>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

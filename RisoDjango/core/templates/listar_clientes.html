@@ -60,10 +60,12 @@
 <div class="container py-5">
   <div class="lista-container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="mb-0 titulo-lista-clientes">📋 Lista de Clientes</h3>
-      <a href="{% url 'cadastro_cliente' %}" class="btn btn-primary">
-        <i class="fas fa-user-plus me-2"></i>Cadastrar Novo Cliente
-      </a>
+      <h3 class="mb-0 titulo-lista-clientes">
+        <i data-lucide="user" class="inline w-5 h-5 mr-1"></i> Lista de Clientes
+      </h3>      
+        <a href="{% url 'cadastro_cliente' %}" class="btn btn-primary">
+          <i class="fas fa-user-plus me-2"></i>Cadastrar Novo Cliente
+        </a>
     </div>
 
     <table class="table table-striped table-hover table-bordered">

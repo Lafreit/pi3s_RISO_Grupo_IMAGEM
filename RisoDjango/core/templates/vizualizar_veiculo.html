@@ -1,25 +1,80 @@
-<h2>Detalhes do Veículo</h2>
+{% extends 'base.html' %}
+{% load static %}
 
-<p><strong>Tipo:</strong> {{ vehicle.tipo }}</p>
-<p><strong>Placa:</strong> {{ vehicle.placa }}</p>
-<p><strong>Marca:</strong> {{ vehicle.marca }}</p>
-<p><strong>Modelo:</strong> {{ vehicle.modelo }}</p>
-<p><strong>Ano:</strong> {{ vehicle.ano }}</p>
-<p><strong>Quilometragem:</strong> {{ vehicle.quilometragem }}</p>
-<p><strong>Cor:</strong> {{ vehicle.cor }}</p>
-<p><strong>Observações:</strong> {{ vehicle.observacoes }}</p>
+{% block title %}Detalhes do Veículo{% endblock %}
 
-<hr>
+{% block content %}
+  <div class="bg-[#F1F5F4] rounded-2xl shadow-2xl w-full max-w-4xl p-8 justify-center mx-auto mt-10">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+      <a href="{% url 'listar_veiculos' %}" class="bg-[#B6202A] hover:bg-[#8a181f] text-white font-bold py-2 px-6 rounded-lg transition">Voltar</a>
+      <h1 class="text-3xl font-italic font-bold text-[#2C4158]">Veículo: {{ vehicle.placa }}</h1>
+      <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="bg-[#2C4158] hover:bg-[#22354a] text-white font-bold py-2 px-6 rounded-lg transition">Editar</a>
+    </div>
 
-{% if cliente %}
-  <h3>Dono do Veículo</h3>
-  <p><strong>Nome / Razão Social:</strong> {{ cliente.nome }}</p>
-  <p><strong>Documento (CPF/CNPJ):</strong> {{ cliente.documento }}</p>
-  <p><strong>Email:</strong> {{ cliente.email }}</p>
-  <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
-  <a href="{% url 'editar_cliente' %}?documento={{ cliente.documento }}" class="btn btn-warning">
-    Editar Cliente
-  </a>
-{% else %}
-  <p><em>Cliente vinculado não encontrado.</em></p>
-{% endif %}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <p class="text-gray-700 font-semibold mb-2">Tipo</p>
+        <p class="text-gray-900">{{ vehicle.tipo }}</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <p class="text-gray-700 font-semibold mb-2">Placa</p>
+        <p class="text-gray-900">{{ vehicle.placa }}</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <p class="text-gray-700 font-semibold mb-2">Marca</p>
+        <p class="text-gray-900">{{ vehicle.marca }}</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <p class="text-gray-700 font-semibold mb-2">Modelo</p>
+        <p class="text-gray-900">{{ vehicle.modelo }}</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <p class="text-gray-700 font-semibold mb-2">Ano</p>
+        <p class="text-gray-900">{{ vehicle.ano }}</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <p class="text-gray-700 font-semibold mb-2">Quilometragem</p>
+        <p class="text-gray-900">{{ vehicle.quilometragem }} km</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <p class="text-gray-700 font-semibold mb-2">Cor</p>
+        <p class="text-gray-900">{{ vehicle.cor }}</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6 md:col-span-3">
+        <p class="text-gray-700 font-semibold mb-2">Observações</p>
+        <p class="text-gray-900">{{ vehicle.observacoes }}</p>
+      </div>
+    </div>
+
+    {% if cliente %}
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-[#2C4158] mb-4">Dono do Veículo</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <p class="text-gray-700 font-semibold mb-2">Nome / Razão Social</p>
+          <p class="text-gray-900">{{ cliente.nome }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <p class="text-gray-700 font-semibold mb-2">Documento (CPF/CNPJ)</p>
+          <p class="text-gray-900">{{ cliente.documento }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <p class="text-gray-700 font-semibold mb-2">Email</p>
+          <p class="text-gray-900">{{ cliente.email }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <p class="text-gray-700 font-semibold mb-2">Telefone</p>
+          <p class="text-gray-900">{{ cliente.telefone }}</p>
+        </div>
+      </div>
+      <div class="mt-6">
+        <a href="{% url 'editar_cliente' %}?documento={{ cliente.documento }}" class="bg-[#2C4158] hover:bg-[#22354a] text-white font-bold py-2 px-6 rounded-lg transition">Editar Cliente</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <p class="text-gray-900 italic">Cliente vinculado não encontrado.</p>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}
