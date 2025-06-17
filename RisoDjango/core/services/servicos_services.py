@@ -2,6 +2,7 @@ from .db_connection import MongoDBConnection
 import os
 from .client_services import get_client
 from .vehicles_services import get_vehicle
+from datetime import datetime
 
 def get_db():
     db_name = os.environ.get("MONGO_DB_NAME", "riso")
@@ -13,7 +14,6 @@ def service_exists(codigo):
     return service is not None
 
 def register_service(service_data):
-    
     if not service_exists(service_data.get("codigo")):
         codigo = service_data.get("codigo")
         tipo = service_data.get("tipo", "padrão")
@@ -22,15 +22,16 @@ def register_service(service_data):
         duracao = service_data.get("duracao", 0)
         status = service_data.get("status", "ativo")
         quantidadeRodas = service_data.get("quantidadeRodas", 1)
-        prazo = service_data.get("prazo", 0)
+        prazo = service_data.get("prazo_execucao", 0)
+        dataInicio = service_data.get("data_inicio", None)
         try:
-            client_data = get_client(service_data.get("cliente", {}).get("documento", ""))
-            vehicle_data = get_vehicle(service_data.get("cliente", {}).get("veiculo", {}).get("placa", ""))
+            client_data = get_client(service_data.get("documento_cliente"))
+            vehicle_data = get_vehicle(service_data.get("placa_veiculo"))
         except Exception as e:
-            print(f"Error retrieving client or vehicle data: {e}")
+            print(f"Erro ao buscar cliente ou veículo: {e}")
             return False
         if not client_data or not vehicle_data:
-            print("Client or vehicle data not found.")
+            print("Cliente ou veículo não encontrado.")
             return False
         service = {
             "codigo": codigo,
@@ -41,8 +42,9 @@ def register_service(service_data):
             "quantidadeRodas": quantidadeRodas,
             "status": status,
             "duracao": duracao,
-            "cliente_documento": client_data.get("documento"),
-            "veiculo_placa": vehicle_data.get("placa"),
+            "data_inicio": dataInicio,
+            "cliente": client_data,
+            "veiculo": vehicle_data,
         }
 
         get_db()["servicos"].insert_one(service)
@@ -67,8 +69,13 @@ def update_service(codigo, new_data):
         update_fields["prazo"] = new_data["prazo"]
     if "quantidadeRodas" in new_data:
         update_fields["quantidadeRodas"] = new_data["quantidadeRodas"]
+    if "status" in new_data:
+        update_fields["status"] = new_data["status"]
     if "duracao" in new_data:
         update_fields["duracao"] = new_data["duracao"]
+    if "data_inicio" in new_data:
+        update_fields["data_inicio"] = new_data["data_inicio"]
+
     result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": update_fields})
     return result.modified_count > 0
 
@@ -77,8 +84,12 @@ def delete_service(codigo):
     return result.deleted_count > 0
 
 def show_services():
-    services = get_db()["servicos"].find({})
+    services = get_db()["servicos"].find({"status": "ativo"}).sort('prazo', 1)
     return list(services)
+
+def show_completed_services():
+    completed_services = get_db()["servicos"].find({"status": "finalizado"}).sort('prazo', 1)
+    return list(completed_services)
 
 def count_services():
     return get_db()["servicos"].count_documents({})
@@ -86,6 +97,14 @@ def count_services():
 def count_services_by_client_document(document):
     count = get_db()["servicos"].count_documents({"cliente.documento": document})
     return count
+
+def get_open_services_by_client_document(document):
+    open_services = get_db()["servicos"].find({"cliente.documento": document, "status": "ativo"})
+    return list(open_services)
+
+def get_completed_services_by_client_document(document):
+    completed_services = get_db()["servicos"].find({"cliente.documento": document, "status": "finalizado"})
+    return list(completed_services)
 
 def get_active_services():
     active_services = get_db()["servicos"].find({"status": "ativo"})
@@ -98,6 +117,14 @@ def get_inactive_services():
 def get_service_by_type(tipo):
     service = get_db()["servicos"].find_one({"tipo": tipo})
     return service if service else None
+
+def finalizar_servico(codigo):
+    result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": {"status": "finalizado", "data_fechamento": datetime.now()}})
+    return result.modified_count > 0
+
+def cancelar_servico(codigo):
+    result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": {"status": "cancelado", "data_fechamento": datetime.now()}})
+    return result.modified_count > 0
 
 
 

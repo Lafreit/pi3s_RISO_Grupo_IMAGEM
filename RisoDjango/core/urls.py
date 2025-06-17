@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import cadastro_cliente, login, logout, listar_clientes, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente, cadastro_veiculo, editar_veiculo, listar_veiculos, excluir_veiculo, vizualizar_veiculo, listar_servicos, editar_servico, excluir_servico, cadastro_servico, excluir_servico
+from core.views import cadastro_cliente, login, logout, listar_clientes, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente, cadastro_veiculo, editar_veiculo, listar_veiculos, excluir_veiculo, vizualizar_veiculo, listar_servicos, editar_servico,  vizualizar_servico ,cadastro_servico, excluir_servico,cancelar_servico, finalizar_servico, servicos_finalizados
 
 
 
@@ -21,6 +21,10 @@ urlpatterns = [
     path('listar-servicos/', listar_servicos, name='listar_servicos'),
     path('editar-servicos/', editar_servico, name='editar_servico'),
     path('excluir_servico/', excluir_servico, name='excluir_servico'),
+    path('cancelar_servico/', cancelar_servico, name='cancelar_servico'),
+    path('vizualizar_servico/', vizualizar_servico, name='vizualizar_servico'),
+    path('finalizar_servico/', finalizar_servico, name='finalizar_servico'),
+    path('servicos-finalizados/', servicos_finalizados, name='servicos_finalizados'),
     # path('cadastro-usuario/', cadastro_cliente, name='cadastro_usuario'),
     # path('listar-usuarios/', listar_clientes, name='listar_usuarios'),
     # path('editar-usuarios/<int:user_id>/', editar_cliente, name='editar_usuarios'),

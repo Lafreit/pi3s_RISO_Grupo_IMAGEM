@@ -7,6 +7,7 @@ from .services import client_services , vehicles_services, servicos_services
 from core.services.client_services import get_db
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from datetime import datetime
 
 # Create your views here.
 
@@ -112,7 +113,7 @@ def excluir_cliente(request):
     if not documento:
         return redirect('listar_clientes')
 
-    client = get_db()["clients"].find_one({"documento": documento})
+    client = client_services.get_client(documento)
     if not client:
         return redirect('listar_clientes')
 
@@ -132,11 +133,14 @@ def vizualizar_cliente(request):
         return redirect('listar_clientes')
 
     vehicles = vehicles_services.list_vehicles_by_documento(documento)
-
+    servicos_abertos = servicos_services.get_open_services_by_client_document(documento)
+    servicos_finalizados = servicos_services.get_completed_services_by_client_document(documento)
     return render(request, 'vizualizar_cliente.html', {
         'client': client,
         'vehicles': vehicles,
         'services': servicos_services.count_services_by_client_document(documento),
+        'servicos_abertos': servicos_abertos,
+        'servicos_finalizados': servicos_finalizados,
     })
 
 
@@ -300,21 +304,20 @@ def cadastro_servico(request):
             'placa_veiculo': placa
         })
     if request.method == 'POST':
-        documento_cliente = request.POST.get('documento')
-        if not documento_cliente:
+        documento_cliente = request.GET.get('documento')
+        placa = request.GET.get('placa')
+        if not documento_cliente or not placa:
             return redirect('listar_clientes')
-        placa = request.POST.get('placa')
-        if not placa:
-            return redirect('listar_veiculos')
         print("Dados do serviço recebidos:", request.POST)
         data = {
             "codigo": request.POST.get('codigo'),
             "tipo": request.POST.get('tipo'),
             "descricao": request.POST.get('descricao'),
-            "preco": float(request.POST.get('preco', 0.0)),
-            "prazo": int(request.POST.get('prazo', 0)),
-            "quantidadeRodas": int(request.POST.get('quantidadeRodas', 1)),
-            "duracao": int(request.POST.get('duracao', 0)),
+            "preco": alterar_br_para_float(request.POST.get('valor_unitario', 0.0)),
+            "prazo_execucao": datetime.fromisoformat(request.POST.get('prazo_execucao', datetime.now().isoformat())),
+            "data_inicio": datetime.fromisoformat(request.POST.get('data_inicio', datetime.now().isoformat())),
+            "quantidadeRodas": int(request.POST.get('quantidade_rodas', 1)),
+            "duracao": request.POST.get('tempo_execucao', 0),
             "status": request.POST.get('status', 'ativo'),
             "documento_cliente": documento_cliente,
             "placa_veiculo": placa,  
@@ -338,14 +341,15 @@ def editar_servico(request):
         return redirect('listar_servicos')
 
     if request.method == 'POST':
-        new_data = {
+        new_data= {
             "tipo": request.POST.get("tipo"),
             "descricao": request.POST.get("descricao"),
-            "preco": float(request.POST.get("preco", 0.0)),
-            "prazo": int(request.POST.get("prazo", 0)),
-            "quantidadeRodas": int(request.POST.get("quantidadeRodas", 1)),
-            "duracao": int(request.POST.get("duracao", 0)),
-            "status": request.POST.get("status", 'ativo')
+            "preco": alterar_br_para_float(request.POST.get("preco", 0.0)),
+            "prazo": datetime.fromisoformat(request.POST.get('prazo_execucao', datetime.now().isoformat())),
+            "data_inicio": datetime.fromisoformat(request.POST.get('data_inicio', datetime.now().isoformat())),
+            "quantidadeRodas": int(request.POST.get("quantidade_rodas", 1)),
+            "duracao": request.POST.get("duracao", 0),
+            "status": request.POST.get("status", "ativo"),
         }
         success = servicos_services.update_service(codigo, new_data)
         if success:
@@ -355,6 +359,45 @@ def editar_servico(request):
             return render(request, 'editar_servico.html', {'service': new_data, 'error': error})
 
     return render(request, 'editar_servico.html', {'service': service})
+
+@login_required
+def finalizar_servico(request):
+    codigo = request.POST.get('codigo')
+    if not codigo:
+        return redirect('listar_servicos')
+
+    service = servicos_services.get_service(codigo)
+    if not service:
+        return redirect('listar_servicos')
+
+    if request.method == 'POST':
+        try:
+            servicos_services.finalizar_servico(codigo)
+            return redirect('listar_servicos')
+        except Exception as e:
+            error = str(e)
+            return render(request, 'finalizar_servico.html', {'service': service, 'error': error})
+
+    return render(request, 'finalizar_servico.html', {'service': service})
+
+@login_required
+def cancelar_servico(request):
+    codigo = request.POST.get('codigo')
+    if not codigo:
+        return redirect('listar_servicos')
+
+    service = servicos_services.get_service(codigo)
+    if not service:
+        return redirect('listar_servicos')
+
+    if request.method == 'POST':
+        try:
+            servicos_services.cancel_service(codigo)
+            return redirect('listar_servicos')
+        except Exception as e:
+            error = str(e)
+            return render(request, 'cancelar_servico.html', {'service': service, 'error': error})
+    return render(request, 'cancelar_servico.html', {'service': service})
 
 @login_required
 def excluir_servico(request):
@@ -378,12 +421,30 @@ def excluir_servico(request):
 
 @login_required
 def vizualizar_servico(request):
+    print("Vizualizar serviço chamado")
     codigo = request.GET.get('codigo')
-    if not codigo:
+    servico = servicos_services.get_service(codigo)
+    if not servico:
         return redirect('listar_servicos')
+    return render(request, 'vizualizar_servico.html', {
+        'servico': servico,
+    })
 
-    service = servicos_services.get_service(codigo)
-    if not service:
-        return redirect('listar_servicos')
+@login_required
+def servicos_finalizados(request):
+    finalizados = []
+    finalizados = servicos_services.show_completed_services()
+    return render(request, 'servicos_finalizados.html', {'services': finalizados})
 
-    return render(request, 'vizualizar_servico.html', {'service': service})
+def alterar_br_para_float(value):
+    if isinstance(value, float):
+        return value
+    if isinstance(value, int):
+        return float(value)
+    if isinstance(value, str):
+        value = value.replace('.', '').replace(',', '.')
+        try:
+            return float(value)
+        except Exception:
+            return 0.0
+    return 0.0
