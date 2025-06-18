@@ -13,20 +13,20 @@
             <div class="alert alert-danger text-center font-weight-bold" role="alert">{{ error }}</div>
           {% endif %}
           <div class="mb-3">
-            <p class="mb-1"><strong>Código:</strong> {{ service.codigo }}</p>
-            <p class="mb-1"><strong>Tipo:</strong> {{ service.tipo }}</p>
-            <p class="mb-1"><strong>Cliente:</strong> {{ service.cliente.nome }}</p>
-            <p class="mb-1"><strong>Veículo:</strong> {{ service.veiculo.modelo }} - {{ service.veiculo.placa }}</p>
-            <p class="mb-1"><strong>Status atual:</strong> {{ service.status }}</p>
+            <p class="mb-1"><strong>Código:</strong> {{ servico.codigo }}</p>
+            <p class="mb-1"><strong>Tipo:</strong> {{ servico.tipo }}</p>
+            <p class="mb-1"><strong>Cliente:</strong> {{ servico.cliente.nome }}</p>
+            <p class="mb-1"><strong>Veículo:</strong> {{ servico.veiculo.modelo }} - {{ servico.veiculo.placa }}</p>
+            <p class="mb-1"><strong>Status atual:</strong> {{ servico.status }}</p>
           </div>
           <form method="POST">
             {% csrf_token %}
-            <input type="hidden" name="codigo" value="{{ service.codigo }}">
+            <input type="hidden" name="codigo" value="{{ servico.codigo }}">
             <div class="alert alert-warning text-center">
               Tem certeza que deseja <strong>cancelar</strong> este serviço? Esta ação não pode ser desfeita.
             </div>
             <div class="d-flex justify-content-between mt-4">
-              <a href="{% url 'vizualizar_servico' %}?codigo={{ service.codigo }}" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Voltar</a>
+              <a href="{% url 'vizualizar_servico' servico.codigo %}" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Voltar</a>
               <button type="submit" class="btn btn-danger"><i class="fas fa-ban me-1"></i> Cancelar Serviço</button>
             </div>
           </form>
