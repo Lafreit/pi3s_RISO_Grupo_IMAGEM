@@ -387,23 +387,37 @@ def finalizar_servico(request):
     return render(request, 'finalizar_servico.html', {'service': service})
 
 @login_required
-def cancelar_servico(request):
-    codigo = request.POST.get('codigo')
-    if not codigo:
-        return redirect('listar_servicos')
-
-    service = servicos_services.get_service(codigo)
-    if not service:
-        return redirect('listar_servicos')
-
-    if request.method == 'POST':
-        try:
-            servicos_services.cancel_service(codigo)
+def cancelar_servico(request, codigo):
+    if request.method == 'GET':
+        if not codigo:
             return redirect('listar_servicos')
-        except Exception as e:
-            error = str(e)
-            return render(request, 'cancelar_servico.html', {'service': service, 'error': error})
-    return render(request, 'cancelar_servico.html', {'service': service})
+
+        service = servicos_services.get_service(codigo)
+        if not service:
+            return redirect('listar_servicos')
+        
+        if service.get('status', '').lower() != 'ativo':
+            return redirect('listar_servicos')
+
+        return render(request, 'cancelar_servico.html', {'service': service})
+        
+    if request.method == 'POST':
+        codigo = request.POST.get('codigo')
+        if not codigo:
+            return redirect('listar_servicos')
+
+        servico = servicos_services.get_service(codigo)
+        if not servico:
+            return redirect('listar_servicos')
+
+        if request.method == 'POST':
+            try:
+                servicos_services.cancel_service(codigo)
+                return redirect('listar_servicos')
+            except Exception as e:
+                error = str(e)
+                return render(request, 'cancelar_servico.html', {'servico': service, 'error': error})
+        return render(request, 'cancelar_servico.html', {'servico': service})
 
 @login_required
 def excluir_servico(request):
