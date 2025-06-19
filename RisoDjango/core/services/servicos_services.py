@@ -38,7 +38,7 @@ def register_service(service_data):
             "tipo": tipo,
             "descricao": descricao,
             "preco": preco,
-            "prazo": prazo,
+            "prazo_execucao": prazo,
             "quantidadeRodas": quantidadeRodas,
             "status": status,
             "duracao": duracao,
@@ -65,8 +65,8 @@ def update_service(codigo, new_data):
         update_fields["descricao"] = new_data["descricao"]
     if "preco" in new_data:
         update_fields["preco"] = new_data["preco"]
-    if "prazo" in new_data:
-        update_fields["prazo"] = new_data["prazo"]
+    if "prazo_execucao" in new_data:
+        update_fields["prazo_execucao"] = new_data["prazo_execucao"]
     if "quantidadeRodas" in new_data:
         update_fields["quantidadeRodas"] = new_data["quantidadeRodas"]
     if "status" in new_data:

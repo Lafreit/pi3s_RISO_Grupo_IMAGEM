@@ -52,7 +52,11 @@
 
 <div class="editar-servico-container">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <a href="{% url 'listar_servicos' %}" class="btn btn-secondary rounded-circle d-flex align-items-center justify-content-center" title="Voltar" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; box-shadow: 0 2px 6px #0002; font-size: 1.3rem; padding: 0;">
+    <a href="{% url 'listar_servicos' %}" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+    title="Voltar"
+    style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+           box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+           background-color: white; border: 2px solid #0d6efd; color: #0d6efd;">
       <i class="fas fa-arrow-left"></i>
     </a>
     <h2 class="editar-servico-title flex-grow-1">Editar Serviço</h2>
@@ -84,14 +88,19 @@
     <label for="data_inicio">Data de Início</label>
     <input type="date" name="data_inicio" value="{{ service.data_inicio|date:'Y-m-d' }}" class="form-control" required>
 
-    <label for="prazo_execucao">Prazo Final</label>
-    <input type="date" name="prazo_execucao" value="{{ service.prazo_execucao|date:'Y-m-d' }}" class="form-control" required>
+    <label for="prazo_execucao">Prazo Final</label> 
+    <input type="date" name="prazo_execucao" value="{{ service.prazo_execucao|date:'Y-m-d' }}" class="form-control" required>    
 
     <label for="descricao">Descrição</label>
     <textarea name="descricao" class="form-control" rows="3" required>{{ service.descricao }}</textarea>
 
-    <button type="submit" class="btn btn-success rounded-pill" style="font-size: 1.1rem; margin-top: 18px;">Salvar Alterações</button>
-    <a href="{% url 'listar_servicos' %}" class="btn btn-secondary rounded-pill" style="font-size: 1.1rem;">Cancelar</a>
+    <button type="submit" class="btn btn-success rounded-pill" style="font-size: 1.1rem; margin-top: 18px; width: 100%;">Salvar Alterações</button>
+    <a href="{% url 'listar_servicos' %}" 
+   style="font-size: 1.1rem; margin-top: 18px; width: 100%; padding: 0.5rem 1rem; border-radius: 50px; border: 2px solid #B6202A; color: #B6202A; background-color: white; text-align: center; display: inline-block; text-decoration: none; transition: all 0.3s ease;"
+   onmouseover="this.style.backgroundColor='#8a181f'; this.style.color='white';"
+   onmouseout="this.style.backgroundColor='white'; this.style.color='#B6202A';">
+  Cancelar
+   </a>
   </form>
 </div>
 {% endblock %}

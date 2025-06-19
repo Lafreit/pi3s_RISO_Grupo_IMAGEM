@@ -75,8 +75,8 @@
           </div>
           <div>
             <label class="form-label">Prazo Final</label>
-            <input type="date" name="prazo_final" class="form-control" value="{{ data.prazo_final|default:'' }}" required>
-          </div>
+            <input type="date" name="prazo_execucao" class="form-control" value="{{ data.prazo_execucao|default:'' }}" required>
+          </div>          
         </div>
 
         <div class="mt-4">
@@ -85,12 +85,14 @@
         </div>
 
         <div class="text-center mb-3 mt-4">
-          <button type="submit" class="btn text-white w-full" style="background-color: #2C4158;">Cadastrar serviço</button>
+          <button type="submit" class="btn text-white w-100" style="background-color: #2C4158;">Cadastrar serviço</button>
         </div>
-
+        
         <div class="text-center mb-3">
-          <a href="{% url 'listar_servicos' %}" class="btn text-white w-full" style="background-color: #B6202A;">Cancelar Cadastro</a>
-        </div>
+          <a href="{% url 'listar_servicos' %}" class="btn btn-outline-danger w-100 font-weight-bold">
+            Cancelar Cadastro
+          </a>
+        </div>        
       </form>
     </div>
   </div>

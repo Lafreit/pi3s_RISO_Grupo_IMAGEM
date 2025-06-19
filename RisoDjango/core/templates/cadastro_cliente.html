@@ -65,15 +65,21 @@
       </div>
 
       <div class="flex flex-col md:flex-row justify-between gap-4 mt-6">
+        <a href="{% url 'listar_clientes' %}"
+           class="w-full font-bold py-2 px-4 rounded-lg text-center transition"
+           style="border: 2px solid #B6202A; color: #B6202A; background-color: transparent; text-decoration: none;"
+           onmouseover="this.style.backgroundColor='#B6202A'; this.style.color='white';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#B6202A';"
+        >
+          Cancelar Cadastro
+        </a>
         <button type="submit"
                 class="w-full bg-[#2C4158] hover:bg-[#22354a] text-white font-bold py-2 px-4 rounded-lg transition">
           Cadastrar Cliente
         </button>
-        <a href="{% url 'listar_clientes' %}"
-           class="w-full bg-[#B6202A] hover:bg-[#8a181f] text-white font-bold py-2 px-4 rounded-lg text-center transition">
-          Cancelar Cadastro
-        </a>
-      </div>
+      
+      </div>      
+        </div>        
     </form>
   </div>
 </div>

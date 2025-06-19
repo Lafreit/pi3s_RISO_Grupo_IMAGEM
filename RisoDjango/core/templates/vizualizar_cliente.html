@@ -7,11 +7,19 @@
   <div class="bg-[#F1F5F4] rounded-2xl shadow-2xl w-full max-w-4xl p-8 justify-center mx-auto mt-10">
 
     <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-      <a href="{% url 'listar_clientes' %}" class="btn btn-secondary rounded-circle d-flex align-items-center justify-content-center" title="Voltar" style="width: 40px; height: 40px; box-shadow: 0 2px 6px #0002;">
+      <a href="{% url 'listar_clientes' %}" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+      title="Voltar"
+      style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+             box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+             background-color: white; border: 2px solid #0d6efd; color: #0d6efd;">
         <i class="fas fa-arrow-left"></i>
       </a>
       <h1 class="text-3xl font-italic font-bold text-[#2C4158]">Cliente: {{ client.nome }}</h1>
-      <a href="{% url 'editar_cliente' %}?documento={{ client.documento }}" class="btn btn-warning rounded-circle d-flex align-items-center justify-content-center" title="Editar" style="width: 40px; height: 40px; box-shadow: 0 2px 6px #0002;">
+      <a href="{% url 'editar_cliente' %}?documento={{ client.documento }}" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+      title="Editar"
+      style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+             box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+             background-color: white; border: 2px solid #0d6efd; color: #0d6efd;">
         <i class="fas fa-edit"></i>
       </a>
     </div>
@@ -130,11 +138,8 @@
 
 {% comment %} cartao de veiculo' {% endcomment %}
     <div class="mb-8">
-      <h2 class="text-2xl font-bold text-[#2C4158] mb-4 flex items-center gap-2">
-        <i class="fas fa-car-side text-[#2C4158]"></i> Veículos do Cliente
-      </h2>
       <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-      <h2 class="text-2xl font-bold text-[#2C4158]">Veículos do Cliente</h2>
+      <h2 class="text-2xl font-bold text-[#2C4158]"> <i class="fas fa-car-side text-[#2C4158]"></i> Veículos do Cliente</h2>
       <a href="{% url 'cadastro_veiculo' %}?documento={{ client.documento }}" class="flex items-center gap-2 bg-[#2C4158] hover:bg-[#22354a] text-white font-semibold py-2 px-6 rounded-lg transition whitespace-nowrap">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

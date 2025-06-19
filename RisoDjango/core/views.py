@@ -351,7 +351,7 @@ def editar_servico(request):
             "tipo": request.POST.get("tipo"),
             "descricao": request.POST.get("descricao"),
             "preco": alterar_br_para_float(request.POST.get("preco", 0.0)),
-            "prazo": datetime.fromisoformat(request.POST.get('prazo_execucao', datetime.now().isoformat())),
+            "prazo_execucao": datetime.fromisoformat(request.POST.get('prazo_execucao', datetime.now().isoformat())),
             "data_inicio": datetime.fromisoformat(request.POST.get('data_inicio', datetime.now().isoformat())),
             "quantidadeRodas": int(request.POST.get("quantidade_rodas", 1)),
             "duracao": request.POST.get("duracao", 0),
