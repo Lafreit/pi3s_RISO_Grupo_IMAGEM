@@ -16,10 +16,11 @@ def service_exists(codigo):
 
 def register_service(service_data):
     print("Registrando serviço...")
-    codigo = int(get_last_service_code())
+    codigo = get_last_service_code()
     if codigo is None:
         codigo = 1
     else:
+        codigo = int(codigo)
         codigo += 1
     if not service_exists(codigo):
         tipo = service_data.get("tipo", "padrão")
@@ -147,6 +148,7 @@ def cancel_service(codigo):
 def show_delayed_services():
     today = datetime.now()
     delayed_services = get_db()["servicos"].find({"status": "ativo", "prazo": {"$lt": today}})
+    print(f"Serviços atrasados encontrados: {len(list(delayed_services))}")
     return list(delayed_services)
 
 def get_next_due_service():
