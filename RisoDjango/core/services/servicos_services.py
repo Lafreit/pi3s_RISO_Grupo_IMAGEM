@@ -10,12 +10,18 @@ def get_db():
     return mongo.get_db()
 
 def service_exists(codigo):
+    codigo = int(codigo)
     service = get_db()["servicos"].find_one({"codigo": codigo})
     return service is not None
 
 def register_service(service_data):
-    if not service_exists(service_data.get("codigo")):
-        codigo = service_data.get("codigo")
+    print("Registrando serviço...")
+    codigo = int(get_last_service_code())
+    if codigo is None:
+        codigo = 1
+    else:
+        codigo += 1
+    if not service_exists(codigo):
         tipo = service_data.get("tipo", "padrão")
         descricao = service_data.get("descricao", "")
         preco = service_data.get("preco", 0.0)
@@ -52,11 +58,17 @@ def register_service(service_data):
     return False
 
 def get_service(codigo):
+    codigo = int(codigo)
     service = get_db()["servicos"].find_one({"codigo": codigo})
     return service if service else None
 
+def get_last_service_code():
+    last_service = get_db()["servicos"].find_one({}, sort=[("codigo", -1)])
+    return last_service["codigo"] if last_service else None
+
 def update_service(codigo, new_data):
     update_fields = {}
+    codigo = int(codigo)
     if not service_exists(codigo):
         return False
     if "tipo" in new_data:
@@ -123,10 +135,12 @@ def get_service_by_type(tipo):
     return service if service else None
 
 def finish_service(codigo):
+    codigo = int(codigo)
     result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": {"status": "finalizado", "data_fechamento": datetime.now()}})
     return result.modified_count > 0
 
 def cancel_service(codigo):
+    codigo = int(codigo)
     result = get_db()["servicos"].update_one({"codigo": codigo}, {"$set": {"status": "cancelado", "data_fechamento": datetime.now()}})
     return result.modified_count > 0
 

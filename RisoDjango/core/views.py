@@ -298,6 +298,7 @@ def listar_servicos(request):
 
 @login_required
 def cadastro_servico(request):
+    
     if request.method == 'GET':
         documento_cliente = request.GET.get('documento')
         if not documento_cliente:
@@ -316,7 +317,6 @@ def cadastro_servico(request):
             return redirect('listar_clientes')
         print("Dados do serviço recebidos:", request.POST)
         data = {
-            "codigo": request.POST.get('codigo'),
             "tipo": request.POST.get('tipo'),
             "descricao": request.POST.get('descricao'),
             "preco": alterar_br_para_float(request.POST.get('valor_unitario', 0.0)),
@@ -332,21 +332,25 @@ def cadastro_servico(request):
             servicos_services.register_service(data)
             return redirect('listar_servicos')
         except Exception as e:
+            print(f"Erro ao cadastrar serviço: {e}")
             return render(request, 'cadastro_servico.html', {'error': str(e), 'data': data})
 
     return render(request, 'cadastro_servico.html')
 
 @login_required
 def editar_servico(request):
-    codigo = request.GET.get('codigo') or request.POST.get('codigo')
-    if not codigo:
-        return redirect('listar_servicos')
+    if request.method == 'GET':
+        codigo = request.GET.get('codigo')
+        if not codigo:
+            return redirect('listar_servicos')
 
-    service = servicos_services.get_service(codigo)
-    if not service:
-        return redirect('listar_servicos')
+        service = servicos_services.get_service(codigo)
+        if not service:
+            return redirect('listar_servicos')
+        return render(request, 'editar_servico.html', {'service': service})
 
     if request.method == 'POST':
+        codigo = request.GET.get('codigo')
         new_data= {
             "tipo": request.POST.get("tipo"),
             "descricao": request.POST.get("descricao"),
@@ -390,28 +394,33 @@ def finalizar_servico(request):
 def cancelar_servico(request, codigo):
     if request.method == 'GET':
         if not codigo:
+            print("Código do serviço não fornecido.")
             return redirect('listar_servicos')
 
         service = servicos_services.get_service(codigo)
         if not service:
+            print("Serviço não encontrado.")
             return redirect('listar_servicos')
         
         if service.get('status', '').lower() != 'ativo':
+            print("Serviço não está ativo, não pode ser cancelado.")
             return redirect('listar_servicos')
 
-        return render(request, 'cancelar_servico.html', {'service': service})
+        return render(request, 'cancelar_servico.html', {'servico': service})
         
     if request.method == 'POST':
-        codigo = request.POST.get('codigo')
         if not codigo:
+            print("Código do serviço não fornecido.")
             return redirect('listar_servicos')
 
         servico = servicos_services.get_service(codigo)
         if not servico:
+            print("Serviço não encontrado.")
             return redirect('listar_servicos')
 
         if request.method == 'POST':
             try:
+                print("Tentando cancelar o serviço com código:", codigo)
                 servicos_services.cancel_service(codigo)
                 return redirect('listar_servicos')
             except Exception as e:
