@@ -104,7 +104,7 @@ def show_completed_services():
     return list(completed_services)
 
 def show_canceled_services():
-    canceled_services = get_db()["servicos"].find({"status": "cancelado"}).sort('prazo', -1)
+    canceled_services = get_db()["servicos"].find({"status": "cancelado"}).sort('prazo', 1)
     return list(canceled_services)
 
 def count_services():
