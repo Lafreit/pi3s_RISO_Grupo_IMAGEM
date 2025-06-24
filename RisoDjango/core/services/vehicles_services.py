@@ -63,7 +63,7 @@ def delete_vehicle(placa):
     return result.deleted_count > 0
 
 def list_vehicles():
-    vehicles = get_db()["vehicles"].find({})
+    vehicles = get_db()["vehicles"].find({}).sort("placa", 1)
     return list(vehicles)
 
 def count_vehicles():

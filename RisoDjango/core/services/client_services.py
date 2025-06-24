@@ -97,7 +97,7 @@ def delete_client(document):
     return result.deleted_count > 0
 
 def list_clients():
-    clients = get_db()["clients"].find({})
+    clients = get_db()["clients"].find({}).sort("nome", 1)
     return list(clients)
 
 def count_clients():
