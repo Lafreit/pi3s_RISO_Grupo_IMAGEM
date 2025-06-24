@@ -47,7 +47,7 @@
             <td>{{ service.veiculo.modelo }} - {{ service.veiculo.placa }}</td>
             <td>R$ {{ service.preco|floatformat:2 }}</td>
             <td>{{ service.data_inicio|date:"d/m/Y" }}</td>
-            <td>{{ service.prazo|date:"d/m/Y" }}</td>
+            <td>{{ service.data_fechamento|date:"d/m/Y" }}</td>
             <td>
               <a href="{% url 'vizualizar_servico' %}?codigo={{ service.codigo }}" class="btn btn-outline-info btn-sm d-flex align-items-center gap-2" title="Visualizar">
                 <i class="fas fa-eye"></i> Visualizar
