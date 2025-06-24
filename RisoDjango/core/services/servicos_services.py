@@ -96,15 +96,15 @@ def delete_service(codigo):
     return result.deleted_count > 0
 
 def show_services():
-    services = get_db()["servicos"].find({"status": "ativo"}).sort('prazo', 1)
+    services = get_db()["servicos"].find({"status": "ativo"}).sort('prazo', -1)
     return list(services)
 
 def show_completed_services():
-    completed_services = get_db()["servicos"].find({"status": "finalizado"}).sort('prazo', 1)
+    completed_services = get_db()["servicos"].find({"status": "finalizado"}).sort('prazo', -1)
     return list(completed_services)
 
 def show_canceled_services():
-    canceled_services = get_db()["servicos"].find({"status": "cancelado"}).sort('prazo', 1)
+    canceled_services = get_db()["servicos"].find({"status": "cancelado"}).sort('prazo', -1)
     return list(canceled_services)
 
 def count_services():
