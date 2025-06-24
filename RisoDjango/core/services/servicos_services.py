@@ -5,7 +5,7 @@ from .vehicles_services import get_vehicle
 from datetime import datetime
 
 def get_db():
-    db_name = os.environ.get("MONGO_DB_NAME", "riso")
+    db_name = "riso"
     mongo = MongoDBConnection(db_name=db_name)
     return mongo.get_db()
 
