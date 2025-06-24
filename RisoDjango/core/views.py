@@ -288,7 +288,6 @@ def vizualizar_veiculo(request):
 def listar_servicos(request):
     if request.method == 'GET':
         services = servicos_services.show_services()
-        print(services)
         return render(request, 'listar_servicos.html', context={'services': services})
     if request.method == 'POST':
         service_id = request.POST.get('codigo')
@@ -315,7 +314,6 @@ def cadastro_servico(request):
         placa = request.GET.get('placa')
         if not documento_cliente or not placa:
             return redirect('listar_clientes')
-        print("Dados do serviço recebidos:", request.POST)
         data = {
             "tipo": request.POST.get('tipo'),
             "descricao": request.POST.get('descricao'),
