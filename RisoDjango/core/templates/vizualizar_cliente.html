@@ -160,7 +160,14 @@
             </div>
           {% endfor %}
         {% else %}
-          <div class="p-3">Não há veículos cadastrados para este cliente.</div>
+        <details class="group bg-white rounded-xl shadow-md">
+          <summary class="cursor-pointer flex items-center justify-between gap-2 p-4">
+            <span class="font-semibold text-gray-800 flex items-center gap-2"> Não há veículos cadastrados para este cliente.</span>
+            <svg class="w-5 h-5 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+        </details>
         {% endif %}
       </div>
     </div>
