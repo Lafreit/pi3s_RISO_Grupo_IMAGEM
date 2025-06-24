@@ -66,15 +66,15 @@
   {% else %}
     <div style="height: 48px;"></div>
   {% endif %}
-  <form method="POST">
+  <form method="POST" >
     {% csrf_token %}
     <input type="hidden" name="id" value="{{ service.id }}">
 
     <label for="tipo">Tipo de Serviço</label>
     <input type="text" name="tipo" value="{{ service.tipo }}" class="form-control" required>
 
-    <label for="codigo">Código</label>
-    <input type="text" name="codigo" value="{{ service.codigo }}" class="form-control" required>
+      <label for="codigo">Código</label>
+      <input type="hidden" name="codigo" value="{{ service.codigo }}" class="form-control" disabled> 
 
     <label for="duracao">Tempo de Execução</label>
     <input type="text" name="duracao" value="{{ service.duracao }}" class="form-control" required>
@@ -92,14 +92,15 @@
     <input type="date" name="prazo_execucao" value="{{ service.prazo_execucao|date:'Y-m-d' }}" class="form-control" required>    
 
     <label for="descricao">Descrição</label>
-    <textarea name="descricao" class="form-control" rows="3" required>{{ service.descricao }}</textarea>
+    <textarea name="descricao" class="form-control" rows="3">{{ service.descricao }}</textarea>
 
     <button type="submit" class="btn btn-success rounded-pill" style="font-size: 1.1rem; margin-top: 18px; width: 100%;">Salvar Alterações</button>
     <a href="{% url 'listar_servicos' %}" 
-   style="font-size: 1.1rem; margin-top: 18px; width: 100%; padding: 0.5rem 1rem; border-radius: 50px; border: 2px solid #B6202A; color: #B6202A; background-color: white; text-align: center; display: inline-block; text-decoration: none; transition: all 0.3s ease;"
-   onmouseover="this.style.backgroundColor='#8a181f'; this.style.color='white';"
-   onmouseout="this.style.backgroundColor='white'; this.style.color='#B6202A';">
-  Cancelar
+      style="font-size: 1.1rem; margin-top: 18px; width: 100%; padding: 0.5rem 1rem; border-radius: 50px; border: 2px solid #B6202A; color: #B6202A; background-color: white; text-align: center; display: inline-block; text-decoration: none; transition: all 0.3s ease;"
+      onmouseover="this.style.backgroundColor='#8a181f'; this.style.color='white';"
+      onmouseout="this.style.backgroundColor='white'; this.style.color='#B6202A';"
+    >
+      Cancelar
    </a>
   </form>
 </div>

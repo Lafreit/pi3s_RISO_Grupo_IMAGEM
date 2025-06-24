@@ -53,10 +53,10 @@
             <label class="form-label">Tipo de Serviço</label>
             <input type="text" name="tipo" class="form-control" placeholder="Ex: Desamaçar rodas" value="{{ data.tipo|default:'' }}" required>
           </div>
-          <div>
+          {% comment %} <div>
             <label class="form-label">Código Único de Serviço</label>
             <input type="text" name="codigo" class="form-control" placeholder="12345" value="{{ data.codigo|default:'' }}" required>
-          </div>
+          </div> Commented bc no need input code {% endcomment %}
           <div>
             <label class="form-label">Execução em Horas</label>
             <input type="text" name="tempo_execucao" class="form-control" placeholder="00:00" value="{{ data.tempo_execucao|default:'' }}" required>

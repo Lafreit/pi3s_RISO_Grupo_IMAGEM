@@ -26,7 +26,7 @@
               Tem certeza que deseja <strong>cancelar</strong> este serviço? Esta ação não pode ser desfeita.
             </div>
             <div class="d-flex justify-content-between mt-4">
-              <a href="{% url 'vizualizar_servico' servico.codigo %}" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Voltar</a>
+              <a href="{% url 'vizualizar_servico'%}?codigo={{servico.codigo}}" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Voltar</a>
               <button type="submit" class="btn btn-danger"><i class="fas fa-ban me-1"></i> Cancelar Serviço</button>
             </div>
           </form>
