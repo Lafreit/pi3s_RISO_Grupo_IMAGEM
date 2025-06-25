@@ -100,6 +100,16 @@ def list_clients(skip=0, limit=50):
     clients_cursor = get_db()["clients"].find({}).sort("nome", 1).skip(skip).limit(limit)
     return list(clients_cursor)
 
+def list_filtered_clients(filters, skip=0, limit=50):
+    query = {}
+    if filters["nome"]:
+        query["nome"] = {"$regex": filters["nome"], "$options": "i"}
+    if filters["documento"]:
+        query["documento"] = {"$regex": replace_special_characters(filters["documento"]), "$options": "i"}
+    ## Ideia retirada do conteúdo do João Pedro 89-91, https://github.com/jp8002/PI_FATEC_2024_3-Semestre/blob/main/studio/core/repositories/AlunoRepository.py
+    clients_cursor = get_db()["clients"].find(query).sort("nome", 1).skip(skip).limit(limit)
+    return list(clients_cursor)
+
 def count_clients():
     return get_db()["clients"].count_documents({})
 

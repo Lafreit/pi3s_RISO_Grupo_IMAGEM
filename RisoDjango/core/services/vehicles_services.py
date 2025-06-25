@@ -58,6 +58,18 @@ def update_vehicle(placa, new_data):
     result = get_db()["vehicles"].update_one({"placa": placa}, {"$set": update_fields})
     return result.modified_count > 0
 
+def filter_vehicles(filter):
+    query = {}
+    if filter.get("tipo"):
+        query["tipo"] = {"$regex": filter["tipo"], "$options": "i"}
+    if filter.get("placa"):
+        query["placa"] = {"$regex": filter["placa"], "$options": "i"}
+    if filter.get("modelo"):
+        query["modelo"] = {"$regex": filter["modelo"], "$options": "i"}
+
+    result = get_db()["vehicles"].find(query).sort("placa", 1) ## Adaptado para o codigo do joão
+    return list(result)
+
 def delete_vehicle(placa):
     result = get_db()["vehicles"].delete_one({"placa": placa})
     return result.deleted_count > 0

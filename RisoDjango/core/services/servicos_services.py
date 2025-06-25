@@ -176,6 +176,17 @@ def get_month_service_count(start_date, end_date):
     })
     return count
 
+def filtered_list_services(filter):
+    query = {}
+    if filter.get("codigo"):
+        query["codigo"] = int(filter["codigo"])
+    if filter.get("tipo"):
+        query["tipo"] = {"$regex": filter["tipo"], "$options": "i"}
+    if filter.get('documento_cliente'):
+        query["cliente.documento"] = filter["documento_cliente"]
+    services = get_db()["servicos"].find(query).sort("prazo_execucao", 1)
+    return list(services)
+
 
 
 

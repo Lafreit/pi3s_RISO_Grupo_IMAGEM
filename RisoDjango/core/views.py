@@ -83,6 +83,18 @@ def listar_clientes(request):
     clients = client_services.list_clients(skip=skip, limit=limit)
     total_pages = (total_clients + limit - 1) // limit
 
+    if request.method == 'GET' and request.GET.get('filtro'):
+        filtro_nome = request.GET.get('filtro_nome', '').strip()
+        filtro_documento = request.GET.get('filtro_documento', '').strip()
+        filtro = {
+            "nome": filtro_nome,
+            "documento": filtro_documento,
+        }
+        clients = client_services.list_filtered_clients(filtro, skip=skip, limit=limit)
+        total_clients = len(clients)
+        total_pages = (total_clients + limit - 1) // limit
+
+
     if request.method == 'POST':
         client_id = request.POST.get('client_id')
         client_services.delete_client(client_id)
@@ -223,6 +235,19 @@ def listar_veiculos(request):
     
     page = int(request.GET.get('page', 1))
     per_page = 50
+    
+    if request.method == 'GET' and request.GET.get('filtro'):
+        filtro_tipo = request.GET.get('filtro_tipo', '').strip()
+        filtro_placa = request.GET.get('filtro_placa', '').strip()
+        filtro_modelo = request.GET.get('filtro_modelo', '').strip()
+        filtro = {
+            "tipo": filtro_tipo,
+            "placa": filtro_placa,
+            "modelo": filtro_modelo,
+        }
+        all_vehicles = vehicles_services.filter_vehicles(filtro) ##Adaptar para o codigo do joão
+
+
 
     paginator = Paginator(all_vehicles, per_page)
     pagina = paginator.get_page(page)
@@ -319,7 +344,17 @@ def listar_servicos(request):
 
     page = int(request.GET.get('page', 1))
     per_page = 50
-
+    if request.method == 'GET' and request.GET.get('filtro'):
+        filtro_tipo = request.GET.get('filtro_tipo', '').strip()
+        filtro_documento = request.GET.get('filtro_documento', '').strip()
+        filtro_codigo = request.GET.get('filtro_codigo', '').strip()
+        filtro = {
+            "tipo": filtro_tipo,
+            "documento_cliente": filtro_documento,
+            "codigo": filtro_codigo,
+        }
+        all_services = servicos_services.filtered_list_services(filtro)  # Adaptado para o código do João
+   
     paginator = Paginator(all_services, per_page)
     pagina = paginator.get_page(page)
 
