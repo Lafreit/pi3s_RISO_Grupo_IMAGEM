@@ -137,25 +137,27 @@
       </tbody>
     </table>
 
+    {% load extras %}
+
     <div class="mt-4 d-flex justify-content-center">
       <nav>
         <ul class="pagination">
           {% if pagina_atual > 1 %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ pagina_atual|add:"-1" }}">&laquo; Anterior</a>
-          </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ pagina_atual|add:'-1' }}">&laquo; Anterior</a>
+            </li>
           {% endif %}
 
-          {% for i in page_range %}
-          <li class="page-item {% if i == pagina_atual %}active{% endif %}">
-            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-          </li>
-          {% endfor %}        
+          {% for i in pagina_atual|page_range:total_paginas %}
+            <li class="page-item {% if i == pagina_atual %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+          {% endfor %}
 
           {% if pagina_atual < total_paginas %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ pagina_atual|add:"1" }}">Próxima &raquo;</a>
-          </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ pagina_atual|add:'1' }}">Próxima &raquo;</a>
+            </li>
           {% endif %}
         </ul>
       </nav>
