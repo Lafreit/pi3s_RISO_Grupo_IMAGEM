@@ -81,20 +81,25 @@ def gerar_veiculo(documento_cliente):
 def gerar_servico(cliente, veiculo):
     data_inicio = datetime.now() - timedelta(days=random.randint(0, 30))
     duracao_horas = random.randint(1, 5)
-    data_fechamento = data_inicio + timedelta(hours=duracao_horas)
+    data_inicio += timedelta(hours=random.randint(0, 23), minutes=random.randint(0, 59))
+
+    data_inicio_str = datetime.fromisoformat(data_inicio.isoformat())
+    data_fechamento_str =  data_inicio_str + timedelta(hours=duracao_horas)
+    prazo_execucao_str  =  datetime.fromisoformat(data_inicio.isoformat())
+
     return {
         "codigo": random.randint(1000, 9999),
         "tipo": random.choice(["Desamaçar Roda", "Pintura", "Revisão Completa", "Troca de Óleo"]),
         "descricao": fake.text(max_nb_chars=50),
         "preco": random.randint(100, 1000),
-        "prazo_execucao": data_fechamento,
+        "prazo_execucao": prazo_execucao_str,
         "quantidadeRodas": random.randint(1, 4),
         "status": random.choice(["ativo", "cancelado", "finalizado"]),
         "duracao": f"{duracao_horas}:00",
-        "data_inicio": data_inicio,
+        "data_inicio": data_inicio_str,
         "cliente": cliente,
         "veiculo": veiculo,
-        "data_fechamento": data_fechamento
+        "data_fechamento": data_fechamento_str
     }
 
 ## gera quanto numeros quiser
