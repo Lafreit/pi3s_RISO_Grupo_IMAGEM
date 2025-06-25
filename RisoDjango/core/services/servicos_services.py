@@ -146,9 +146,14 @@ def cancel_service(codigo):
     return result.modified_count > 0
 
 def show_delayed_services():
-    today = datetime.now()
-    delayed_services = get_db()["servicos"].find({"status": "ativo", "prazo": {"$lt": today}})
-    print(f"Serviços atrasados encontrados: {len(list(delayed_services))}")
+    now = datetime.now()
+    delayed_services = get_db()["servicos"].find({
+        "status": "ativo",
+        "$or": [
+            {"prazo_execucao": {"$lt": now}},
+            {"prazo_execucao": {"$exists": True, "$type": "string", "$lt": now.isoformat()}}
+        ]
+    })
     return list(delayed_services)
 
 def get_next_due_service():
@@ -156,6 +161,16 @@ def get_next_due_service():
     return next_due_service if next_due_service else None
 
 def get_month_service_count(start_date, end_date):
+    if isinstance(start_date, str):
+        try:
+            start_date = datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            pass
+    if isinstance(end_date, str):
+        try:
+            end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            pass
     count = get_db()["servicos"].count_documents({
         "data_inicio": {"$gte": start_date, "$lt": end_date}
     })
