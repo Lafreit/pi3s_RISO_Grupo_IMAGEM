@@ -10,6 +10,8 @@ from django.http import HttpResponseRedirect
 from datetime import datetime
 from django.http import JsonResponse ## Vamos utilizar para criar os charts, acho que talvez com Charts.Js
 import core.services.utils as utils
+from django.core.paginator import Paginator
+
 # Create your views here.
 
 """ def index(request):
@@ -73,14 +75,24 @@ def cadastro_cliente(request):
 
 @login_required
 def listar_clientes(request):
-    if request.method == 'GET':
-        clients = client_services.list_clients()
-        return render(request, 'listar_clientes.html', context={'clients': clients})
+    page = int(request.GET.get('page', 1))
+    limit = 50
+    skip = (page - 1) * limit
+
+    total_clients = client_services.count_clients()
+    clients = client_services.list_clients(skip=skip, limit=limit)
+    total_pages = (total_clients + limit - 1) // limit
+
     if request.method == 'POST':
         client_id = request.POST.get('client_id')
         client_services.delete_client(client_id)
         return redirect('listar_clientes')
-    return render(request, 'listar_clientes.html')
+
+    return render(request, 'listar_clientes.html', {
+        'clients': clients,
+        'pagina_atual': page,
+        'total_paginas': total_pages,
+    })
 
 @login_required
 def editar_cliente(request):
@@ -205,12 +217,24 @@ def editar_veiculo(request):
             return render(request, 'editar_veiculo.html', {'vehicle': new_data, 'error': error})
 
     return render(request, 'editar_veiculo.html', {'vehicle': vehicle})
-
 @login_required
 def listar_veiculos(request):
-    vehicles = vehicles_services.list_vehicles()
-    return render(request, 'listar_veiculos.html', {'vehicles': vehicles})
+    all_vehicles = vehicles_services.list_vehicles()
+    
+    page = int(request.GET.get('page', 1))
+    per_page = 50
 
+    paginator = Paginator(all_vehicles, per_page)
+    pagina = paginator.get_page(page)
+
+    context = {
+        'vehicles': pagina.object_list,
+        'pagina_atual': pagina.number,
+        'total_paginas': paginator.num_pages,
+        'page_range': paginator.page_range,
+    }
+
+    return render(request, 'listar_veiculos.html', context)
 @login_required
 def editar_veiculo(request):
     placa = request.GET.get('placa') or request.POST.get('placa')
@@ -286,14 +310,26 @@ def vizualizar_veiculo(request):
 
 @login_required
 def listar_servicos(request):
-    if request.method == 'GET':
-        services = servicos_services.show_services()
-        return render(request, 'listar_servicos.html', context={'services': services})
     if request.method == 'POST':
         service_id = request.POST.get('codigo')
         servicos_services.delete_service(service_id)
         return redirect('listar_servicos')
-    return render(request, 'listar_servicos.html')
+
+    all_services = servicos_services.show_services()
+
+    page = int(request.GET.get('page', 1))
+    per_page = 50
+
+    paginator = Paginator(all_services, per_page)
+    pagina = paginator.get_page(page)
+
+    context = {
+        'services': pagina.object_list,
+        'pagina_atual': pagina.number,
+        'total_paginas': paginator.num_pages,
+        'page_range': paginator.page_range,
+    }
+    return render(request, 'listar_servicos.html', context)
 
 @login_required
 def cadastro_servico(request):
@@ -461,17 +497,41 @@ def vizualizar_servico(request):
         'status': status,
         'data_cancelamento': data_cancelamento,
     })
-
 @login_required
 def servicos_finalizados(request):
-    finalizados = []
-    finalizados = servicos_services.show_completed_services()
-    return render(request, 'servicos_finalizados.html', {'services': finalizados})
+    all_finalizados = servicos_services.show_completed_services()
+
+    page = int(request.GET.get('page', 1))
+    per_page = 50
+
+    paginator = Paginator(all_finalizados, per_page)
+    pagina = paginator.get_page(page)
+
+    context = {
+        'services': pagina.object_list,
+        'pagina_atual': pagina.number,
+        'total_paginas': paginator.num_pages,
+        'page_range': paginator.page_range,
+    }
+    return render(request, 'servicos_finalizados.html', context)
 
 @login_required
 def visualizar_servicos_cancelados(request):
-    cancelados = servicos_services.show_canceled_services()
-    return render(request, 'servicos_cancelados.html', {'services': cancelados})
+    all_cancelados = servicos_services.show_canceled_services()
+
+    page = int(request.GET.get('page', 1))
+    per_page = 50
+
+    paginator = Paginator(all_cancelados, per_page)
+    pagina = paginator.get_page(page)
+
+    context = {
+        'services': pagina.object_list,
+        'pagina_atual': pagina.number,
+        'total_paginas': paginator.num_pages,
+        'page_range': paginator.page_range,
+    }
+    return render(request, 'servicos_cancelados.html', context)
 
 def alterar_br_para_float(value):
     if isinstance(value, float):
