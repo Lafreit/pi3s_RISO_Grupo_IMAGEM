@@ -91,6 +91,8 @@
       </tbody>
     </table>
 
+    {% load extras %}
+
     <div class="mt-4 d-flex justify-content-center">
       <nav>
         <ul class="pagination">
@@ -100,12 +102,10 @@
           </li>
           {% endif %}
 
-          {% for i in total_paginas|make_list %}
-          {% if forloop.counter <= total_paginas %}
-          <li class="page-item {% if forloop.counter == pagina_atual %}active{% endif %}">
-            <a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+          {% for i in pagina_atual|page_range:total_paginas %}
+          <li class="page-item {% if i == pagina_atual %}active{% endif %}">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
           </li>
-          {% endif %}
           {% endfor %}
 
           {% if pagina_atual < total_paginas %}
