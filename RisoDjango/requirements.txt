@@ -6,7 +6,6 @@ coverage==7.8.2
 decorator==5.2.1
 Django==5.2.1
 dnspython==2.7.0
-dateutil==2.8.2
 executing==2.2.0
 Faker==37.3.0
 ipdb==0.13.13
@@ -14,12 +13,16 @@ ipython==9.2.0
 ipython_pygments_lexers==1.1.1
 jedi==0.19.2
 matplotlib-inline==0.1.7
+mongomock==4.3.0
+packaging==25.0
 parso==0.8.4
 prompt_toolkit==3.0.51
 pure_eval==0.2.3
 Pygments==2.19.1
 pymongo==4.12.1
 python-dateutil==2.9.0.post0
+pytz==2025.2
+sentinels==1.0.0
 six==1.17.0
 sqlparse==0.5.3
 stack-data==0.6.3
