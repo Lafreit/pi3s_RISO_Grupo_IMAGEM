@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastro de Serviços{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/cadastro_cliente.css' %}">
+{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #262B31;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cadastro_cliente-container {
+    background-color: #F1F5F4 !important;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+  }
+
+  .form-control::placeholder {
+    color: #aaa;
+  }
+</style>
+
+<div class="d-flex text-slate-800 justify-content-center align-items-center">
+  <div class="col-md-6 d-flex align-items-center">
+    <div class="cadastro_cliente-container w-full">
+      <h2 class="text-center mb-1 fs-2">Cadastro de Serviço</h2>
+
+      <div class="error-box">
+        {% if error %}
+          <div class="alert alert-danger text-center font-weight-bold" role="alert">
+            {{ error }}
+          </div>
+        {% else %}
+          <div style="height: 48px;"></div>
+        {% endif %}
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label">Tipo de Serviço</label>
+            <input type="text" name="tipo" class="form-control" placeholder="Ex: Desamaçar rodas" value="{{ data.tipo|default:'' }}" required>
+          </div>
+          {% comment %} <div>
+            <label class="form-label">Código Único de Serviço</label>
+            <input type="text" name="codigo" class="form-control" placeholder="12345" value="{{ data.codigo|default:'' }}" required>
+          </div> Commented bc no need input code {% endcomment %}
+          <div>
+            <label class="form-label">Execução em Horas</label>
+            <input type="text" name="tempo_execucao" class="form-control" placeholder="00:00" value="{{ data.tempo_execucao|default:'' }}" required>
+          </div>
+          <div>
+            <label class="form-label">Valor Unitário</label>
+            <input type="text" name="valor_unitario" class="form-control" placeholder="00,00" value="{{ data.valor_unitario|default:'' }}" required>
+          </div>
+          <div>
+            <label class="form-label">Quantidade de Rodas</label>
+            <input type="text" name="quantidade_rodas" class="form-control" placeholder="00000" value="{{ data.quantidade_rodas|default:'' }}" required>
+          </div>
+          <div>
+            <label class="form-label">Data de Início</label>
+            <input type="date" name="data_inicio" class="form-control" value="{{ data.data_inicio|default:'' }}" required>
+          </div>
+          <div>
+            <label class="form-label">Prazo Final</label>
+            <input type="date" name="prazo_execucao" class="form-control" value="{{ data.prazo_execucao|default:'' }}" required>
+          </div>          
+        </div>
+
+        <div class="mt-4">
+          <label class="form-label">Descrição Detalhada</label>
+          <textarea name="descricao" class="form-control" rows="3" placeholder="Escreva detalhes relevantes aqui">{{ data.descricao|default:'' }}</textarea>
+        </div>
+
+        <div class="text-center mb-3 mt-4">
+          <button type="submit" class="btn text-white w-100" style="background-color: #2C4158;">Cadastrar serviço</button>
+        </div>
+        
+        <div class="text-center mb-3">
+          <a href="{% url 'listar_servicos' %}" class="btn btn-outline-danger w-100 font-weight-bold">
+            Cancelar Cadastro
+          </a>
+        </div>        
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

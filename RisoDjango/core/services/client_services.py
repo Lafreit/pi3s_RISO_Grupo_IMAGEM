@@ -2,7 +2,7 @@ from .db_connection import MongoDBConnection
 import os
 
 def get_db():
-    db_name = os.environ.get("MONGO_DB_NAME", "riso")
+    db_name = "riso"
     mongo = MongoDBConnection(db_name=db_name)
     return mongo.get_db()
 
@@ -20,7 +20,7 @@ def validate_client_data(data, is_update=False):
         if not data.get(field):
             raise ValueError("Todos os campos obrigatórios devem ser preenchidos")
 
-    documento = data["documento"]
+    documento = replace_special_characters(data["documento"])
     if not is_update and client_exists(documento):
         raise ValueError("Cliente com este documento já existe")
 
@@ -50,24 +50,27 @@ def validate_client_data(data, is_update=False):
 
 def create_client(data):
     validate_client_data(data)
-
+    
     client = {
         "nome": data.get("nome"),
-        "documento": data.get("documento"),
-        "cep": data.get("cep"),
+        "documento": replace_special_characters(data.get("documento")),
+        "cep": replace_special_characters(data.get("cep")),
         "email": data.get("email"),
-        "telefone": data.get("telefone"),
-        "telefone_residencial": data.get("telefone_residencial")
+        "telefone": replace_special_characters(data.get("telefone")),
+        "telefone_residencial": replace_special_characters(data.get("telefone_residencial"))
     }
 
     get_db()["clients"].insert_one(client)
     return True
 
 def get_client(document):
+    print(f"Buscando cliente com documento: {document}")
+    document = replace_special_characters(document)
     client = get_db()["clients"].find_one({"documento": document})
     return client if client else None
 
 def update_client(document, new_data):
+    document = replace_special_characters(document)
     if not get_client(document):
         return False
 
@@ -89,15 +92,27 @@ def update_client(document, new_data):
     return result.modified_count > 0
 
 def delete_client(document):
+    document = replace_special_characters(document)
     result = get_db()["clients"].delete_one({"documento": document})
     return result.deleted_count > 0
 
-def list_clients():
-    clients = get_db()["clients"].find({})
-    return list(clients)
+def list_clients(skip=0, limit=50):
+    clients_cursor = get_db()["clients"].find({}).sort("nome", 1).skip(skip).limit(limit)
+    return list(clients_cursor)
+
+def list_filtered_clients(filters, skip=0, limit=50):
+    query = {}
+    if filters["nome"]:
+        query["nome"] = {"$regex": filters["nome"], "$options": "i"}
+    if filters["documento"]:
+        query["documento"] = {"$regex": replace_special_characters(filters["documento"]), "$options": "i"}
+    ## Ideia retirada do conteúdo do João Pedro 89-91, https://github.com/jp8002/PI_FATEC_2024_3-Semestre/blob/main/studio/core/repositories/AlunoRepository.py
+    clients_cursor = get_db()["clients"].find(query).sort("nome", 1).skip(skip).limit(limit)
+    return list(clients_cursor)
 
 def count_clients():
     return get_db()["clients"].count_documents({})
 
 def client_exists(document):
+    document = replace_special_characters(document)
     return get_db()["clients"].count_documents({"documento": document}) > 0

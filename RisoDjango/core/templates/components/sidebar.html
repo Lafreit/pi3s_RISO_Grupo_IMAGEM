@@ -1,25 +1,27 @@
+{% load static %}
 <aside id="sidebar"
        class="fixed inset-y-0 left-0 z-40 bg-slate-900 text-white overflow-hidden transition-all duration-300 ease-in-out"
        data-collapsed="{{ collapsed|default:'false' }}"
        style="width: 16rem;">
 
-  <!-- TOPO COM LOGO E BOTÃO -->
+  <button id="toggleSidebar" type="button" class="absolute top-3 right-3 z-50 bg-slate-700 hover:bg-slate-600 text-white rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+    <span class="sr-only">Alternar menu</span>
+    <i id='close-btn' data-lucide="chevron-left" class="w-5 h-5"></i>
+    <i id='open-btn' data-lucide="chevron-right" class="w-5 h-5"></i>
+  </button>
+
   <div class="flex items-center justify-center h-16 px-4 bg-slate-800">
-    <div class="flex items-center space-x-3 overflow-hidden">
-      <div class="bg-orange-500 p-2 rounded-lg shrink-0">
-        <i data-lucide="car" class="w-6 h-6 text-white"></i>
+    <div id="sidebar-title" class="flex items-center space-x-3 overflow-hidden">
+      <div class="bg-transparent p-0 rounded-lg shrink-0 flex items-center justify-center" style="width: 44px; height: 44px;">
+        <img src="{% static 'assets/images.png' %}" alt="Logo Riso" class="object-contain" style="max-width: 44px; max-height: 44px;" id="sidebar-logo">
       </div>
-      <div id="sidebar-title" class="transition-all duration-200 origin-left">
+      <div class="transition-all duration-200 origin-left">
         <h1 class="text-lg font-bold whitespace-nowrap">Riso</h1>
         <p class="text-xs text-slate-300 whitespace-nowrap">Sistema de Gestão</p>
       </div>
     </div>
-    <button id="toggleSidebar" class="text-white ml-auto hover:bg-slate-700 rounded transition">
-      <i data-lucide="menu" class="w-5 h-5"></i>
-    </button>
   </div>
 
-  <!-- LINKS -->
   <nav class="mt-6 space-y-2 px-2">
     {% with request.resolver_match.url_name as active %}
 
@@ -39,13 +41,6 @@
       <span class="sidebar-label">Clientes</span>
     </a>
 
-    <a href="{% url 'listar_usuarios' %}"
-       class="grid grid-cols-[2.5rem_1fr] items-center px-3 py-3 rounded-lg transition-all hover:bg-slate-800 {% if active == 'listar_usuarios' %}bg-orange-500 text-white{% else %}text-slate-300{% endif %}">
-      <div class="flex items-center justify-center w-6 h-6">
-        <i data-lucide="shield" class="w-5 h-5"></i>
-      </div>
-      <span class="sidebar-label">Usuários do Sistema</span>
-    </a>
 
     <a href="{% url 'listar_veiculos' %}"
        class="grid grid-cols-[2.5rem_1fr] items-center px-3 py-3 rounded-lg transition-all hover:bg-slate-800 {% if active == 'listar_veiculos' %}bg-orange-500 text-white{% else %}text-slate-300{% endif %}">
@@ -66,7 +61,6 @@
     {% endwith %}
   </nav>
 
-  <!-- SAIR -->
   <div class="absolute bottom-4 left-4 right-4">
     <a href="{% url 'logout' %}"
        class="grid grid-cols-[2.5rem_1fr] items-center px-4 3y-2 hover:bg-slate-800 text-slate-300 rounded">

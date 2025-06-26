@@ -2,35 +2,33 @@ from .db_connection import MongoDBConnection
 import os
 
 def get_db():
-    db_name = os.environ.get("MONGO_DB_NAME", "riso")
+    db_name = "riso"
     mongo = MongoDBConnection(db_name=db_name)
     return mongo.get_db()
 
+
 def register_vehicle(vehicle_data):
     if not vehicle_exists(vehicle_data.get("placa")):
-        tipo = vehicle_data.get("tipo", "carro")
-        placa = vehicle_data.get("placa")
-        marca = vehicle_data.get("marca")
-        modelo = vehicle_data.get("modelo")
-        ano = vehicle_data.get("ano")
-        kilometragem = vehicle_data.get("quilometragem", 0)
-        cor = vehicle_data.get("cor", "não especificada")
-        observacoes = vehicle_data.get("observacoes", "")
-
         vehicle = {
-            "tipo": tipo,
-            "placa": placa,
-            "marca": marca,
-            "modelo": modelo,
-            "ano": ano,
-            "quilometragem": kilometragem,
-            "cor": cor,
-            "observacoes": observacoes
+            "tipo": vehicle_data.get("tipo", "carro"),
+            "placa": vehicle_data.get("placa"),
+            "marca": vehicle_data.get("marca"),
+            "modelo": vehicle_data.get("modelo"),
+            "ano": vehicle_data.get("ano"),
+            "quilometragem": vehicle_data.get("quilometragem", 0),
+            "cor": vehicle_data.get("cor", "não especificada"),
+            "observacoes": vehicle_data.get("observacoes", ""),
+            "documento_cliente": vehicle_data.get("documento_cliente")
         }
 
         get_db()["vehicles"].insert_one(vehicle)
         return True
     return False
+
+def list_vehicles_by_documento(documento_cliente):
+    vehicles = get_db()["vehicles"].find({"documento_cliente": documento_cliente})
+    return list(vehicles)
+
 
 def get_vehicle(placa):
     vehicle = get_db()["vehicles"].find_one({"placa": placa})
@@ -60,12 +58,24 @@ def update_vehicle(placa, new_data):
     result = get_db()["vehicles"].update_one({"placa": placa}, {"$set": update_fields})
     return result.modified_count > 0
 
+def filter_vehicles(filter):
+    query = {}
+    if filter.get("tipo"):
+        query["tipo"] = {"$regex": filter["tipo"], "$options": "i"}
+    if filter.get("placa"):
+        query["placa"] = {"$regex": filter["placa"], "$options": "i"}
+    if filter.get("modelo"):
+        query["modelo"] = {"$regex": filter["modelo"], "$options": "i"}
+
+    result = get_db()["vehicles"].find(query).sort("placa", 1) ## Adaptado para o codigo do joão
+    return list(result)
+
 def delete_vehicle(placa):
     result = get_db()["vehicles"].delete_one({"placa": placa})
     return result.deleted_count > 0
 
 def list_vehicles():
-    vehicles = get_db()["vehicles"].find({})
+    vehicles = get_db()["vehicles"].find({}).sort("placa", 1)
     return list(vehicles)
 
 def count_vehicles():

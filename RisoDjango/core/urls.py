@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import cadastro_cliente, login, logout, listar_clientes, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente
+from core.views import cadastro_cliente, login, logout, listar_clientes, dashboard, listar_clientes, excluir_cliente, editar_cliente, vizualizar_cliente, cadastro_veiculo, editar_veiculo, listar_veiculos, excluir_veiculo, vizualizar_veiculo, listar_servicos, editar_servico,  vizualizar_servico, visualizar_servicos_cancelados ,cadastro_servico, excluir_servico,cancelar_servico, finalizar_servico, servicos_finalizados
 
 
 
@@ -12,16 +12,22 @@ urlpatterns = [
     path('editar_cliente/', editar_cliente, name='editar_cliente'),
     path('clientes/excluir/', excluir_cliente, name='excluir_cliente'),
     path('vizualizar_cliente/', vizualizar_cliente, name='vizualizar_cliente'),
-    path('cadastro-usuario/', cadastro_cliente, name='cadastro_usuario'),
-    path('listar-usuarios/', listar_clientes, name='listar_usuarios'),
-    path('editar-usuarios/<int:user_id>/', editar_cliente, name='editar_usuarios'),
-    path('deletar-usuarios/<int:user_id>/', editar_cliente, name='deletar_usuarios'),
-    path('cadastro-veiculo/', cadastro_cliente, name='cadastro_veiculo'),
-    path('listar-veiculos/', listar_clientes, name='listar_veiculos'),
-    path('editar-veiculos/<int:vehicle_id>/', editar_cliente, name='editar_veiculos'),
-    path('deletar-veiculos/<int:vehicle_id>/', editar_cliente, name='deletar_veiculos'),
-    path('cadastro-servico/', cadastro_cliente, name='cadastro_servico'),
-    path('listar-servicos/', listar_clientes, name='listar_servicos'),
-    path('editar-servicos/<int:service_id>/', editar_cliente, name='editar_servicos'),
-    path('deletar-servicos/<int:service_id>/', editar_cliente, name='deletar_servicos'),
+    path("cadastro_veiculo/", cadastro_veiculo, name="cadastro_veiculo"),
+    path('veiculos/', listar_veiculos, name='listar_veiculos'),
+    path('editar_veiculo/', editar_veiculo, name='editar_veiculo'),
+    path('excluir_veiculo/', excluir_veiculo, name='excluir_veiculo'),
+    path('vizualizar_veiculo/', vizualizar_veiculo, name='vizualizar_veiculo'),
+    path('cadastro-servico/', cadastro_servico, name='cadastro_servico'),
+    path('listar-servicos/', listar_servicos, name='listar_servicos'),
+    path('editar-servicos/', editar_servico, name='editar_servico'),
+    path('excluir_servico/', excluir_servico, name='excluir_servico'),
+    path('cancelar_servico/<str:codigo>/', cancelar_servico, name='cancelar_servico'),
+    path('vizualizar_servico/', vizualizar_servico, name='vizualizar_servico'),
+    path('servicos_cancelados/', visualizar_servicos_cancelados, name='servicos_cancelados'),
+    path('finalizar_servico/', finalizar_servico, name='finalizar_servico'),
+    path('servicos-finalizados/', servicos_finalizados, name='servicos_finalizados'),
+    # path('cadastro-usuario/', cadastro_cliente, name='cadastro_usuario'),
+    # path('listar-usuarios/', listar_clientes, name='listar_usuarios'),
+    # path('editar-usuarios/<int:user_id>/', editar_cliente, name='editar_usuarios'),
+    # path('deletar-usuarios/<int:user_id>/', editar_cliente, name='deletar_usuarios'),
 ]

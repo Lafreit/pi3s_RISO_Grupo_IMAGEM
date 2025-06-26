@@ -31,7 +31,7 @@ class LoginFormTest(TestCase):
     def test_invalid_username_not_found(self):
         form = self.make_validated_form(username='naoexiste')
         self.assertIn('__all__', form.errors)
-        self.assertIn('Funcionário com esse nome de usuario não encontrado.', form.errors['__all__'])
+        self.assertIn('Usuário não encontrado.', form.errors['__all__'])
 
     def test_wrong_password(self):
         form = self.make_validated_form(password='senhaerrada')

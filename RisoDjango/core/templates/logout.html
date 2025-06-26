@@ -28,8 +28,11 @@
     <h3 class="mb-4">Deseja realmente sair do sistema?</h3>
     <form method="post">
         {% csrf_token %}
+        <a href="{% url 'dashboard' %}" 
+           class="btn btn-outline-primary font-weight-bold px-2 rounded-lg">
+           Cancelar
+        </a>
         <button type="submit" class="btn btn-danger rounded-pill px-4">Sair</button>
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary rounded-pill px-4 ml-2">Cancelar</a>
     </form>
 </div>
 </body>

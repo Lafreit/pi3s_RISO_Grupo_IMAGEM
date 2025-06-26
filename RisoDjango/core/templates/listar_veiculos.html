@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lista de Veículos{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #262B31;
+  }
+
+  .lista-container {
+    background-color: #F1F5F4;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+
+  h2.titulo-lista {
+    color: #2C4158;
+    font-weight: bold;
+  }
+
+  .table thead th {
+    background-color: #2C4158;
+    color: white;
+    text-align: center;
+  }
+
+  .table tbody td {
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .btn-info {
+    background-color: #1f78d1;
+    border: none;
+  }
+
+  .btn-warning {
+    background-color: #ffb700;
+    border: none;
+    color: #000;
+  }
+
+  .btn-danger {
+    background-color: #B6202A;
+    border: none;
+  }
+
+  .btn-primary {
+    background-color: #2C4158;
+    border: none;
+  }
+
+  .btn i {
+    pointer-events: none;
+  }
+
+  .btn-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px #0002;
+  }
+</style>
+
+<div class="container py-5">
+  <div class="lista-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="titulo-lista mb-0" style="font-size: 2rem;">🚗 Lista de Veículos</h2>
+    </div>    
+
+    <form method="get" class="mb-4">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <label for="filtro_placa" class="form-label mb-1" style="color: #2C4158; font-weight: 500;">Placa</label>
+          <input type="text" class="form-control" id="filtro_placa" name="filtro_placa" placeholder="Buscar por placa" value="{{ request.GET.filtro_placa }}">
+        </div>
+        <div class="col-md-4">
+          <label for="filtro_modelo" class="form-label mb-1" style="color: #2C4158; font-weight: 500;">Modelo</label>
+          <input type="text" class="form-control" id="filtro_modelo" name="filtro_modelo" placeholder="Buscar por modelo" value="{{ request.GET.filtro_modelo }}">
+        </div>
+        <div class="col-md-3">
+          <label for="filtro_tipo" class="form-label mb-1" style="color: #2C4158; font-weight: 500;">Tipo</label>
+          <input type="text" class="form-control" id="filtro_tipo" name="filtro_tipo" placeholder="Buscar por tipo" value="{{ request.GET.filtro_tipo }}">
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+          <button type="submit" name='filtro' value='1' class="btn btn-primary px-2 py-1 w-100" style="height: 38px; font-size: 1rem; min-width: 0;">
+            <i class="fas fa-search me-1"></i> Filtrar
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <table class="table table-striped table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Ano</th>
+          <th>Quilometragem</th>
+          <th>Cor</th>
+          <th>Observações</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vehicle in vehicles %}
+          <tr>
+            <td>{{ vehicle.tipo }}</td>
+            <td>{{ vehicle.placa }}</td>
+            <td>{{ vehicle.marca }}</td>
+            <td>{{ vehicle.modelo }}</td>
+            <td>{{ vehicle.ano }}</td>
+            <td>{{ vehicle.quilometragem }}</td>
+            <td>{{ vehicle.cor }}</td>
+            <td>{{ vehicle.observacoes }}</td>
+            <td>
+              <div class="d-flex justify-content-center gap-2">
+                <a href="{% url 'vizualizar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                title="Visualizar"
+                style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+                       box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+                       background-color: white; border: 2px solid #0d6efd; color: #0d6efd;">
+                  <i class="fas fa-eye"></i>
+                </a>
+                <a href="{% url 'editar_veiculo' %}?placa={{ vehicle.placa }}" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                title="Editar"
+                style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+                       box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+                       background-color: white; border: 2px solid #0d6efd; color: #0d6efd;">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <form action="{% url 'excluir_veiculo' %}" method="POST" class="d-inline" onsubmit="return confirm('Deseja realmente excluir este veículo?');">
+                  {% csrf_token %}
+                  <input type="hidden" name="placa" value="{{ vehicle.placa }}">
+                  <button type="submit" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                  title="Excluir"
+                  style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+                         box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+                         background-color: white; border: 2px solid #dc3545; color: #dc3545;">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="9" class="text-center text-muted">Nenhum veículo cadastrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% load extras %}
+
+    <div class="mt-4 d-flex justify-content-center">
+      <nav>
+        <ul class="pagination">
+          {% if pagina_atual > 1 %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ pagina_atual|add:'-1' }}">&laquo; Anterior</a>
+            </li>
+          {% endif %}
+
+          {% for i in pagina_atual|page_range:total_paginas %}
+            <li class="page-item {% if i == pagina_atual %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+          {% endfor %}
+
+          {% if pagina_atual < total_paginas %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ pagina_atual|add:'1' }}">Próxima &raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %}

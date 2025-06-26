@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Serviço: {{ servico.codigo }}{% endblock %}
+
+{% block content %}
+<div class="bg-[#F1F5F4] rounded-2xl shadow-2xl w-full max-w-2xl p-8 justify-center mx-auto mt-10">
+  <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+    <a href="{% url 'listar_servicos' %}" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+    title="Voltar"
+    style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+           box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+           background-color: white; border: 2px solid #0d6efd; color: #0d6efd;">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <h1 class="text-3xl font-italic font-bold text-[#2C4158] flex items-center gap-2">
+      <i class="fas fa-tools text-[#2C4158]"></i> Serviço: {{servico.tipo}} | cod: {{ servico.codigo }}
+    </h1>
+      <div class="flex gap-2">
+    {% if servico.status != 'finalizado' and servico.status != 'cancelado' %}  
+      <a href="{% url 'editar_servico' %}?codigo={{ servico.codigo }}" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+      title="Editar"
+      style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+            box-shadow: 0 2px 6px #0002; font-size: 1.1rem;
+            background-color: white; border: 2px solid #0d6efd; color: #0d6efd;">
+      <i class="fas fa-edit"></i>
+      </a>
+    {% endif %}
+      {% if servico.status != 'finalizado' and servico.status != 'cancelado' %}
+        <form action="{% url 'finalizar_servico' %}?codigo={{ servico.codigo }}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; box-shadow: 0 2px 6px #0002;" title="Finalizar" onclick="return confirm('Deseja realmente finalizar o serviço {{ service.tipo }}?');">
+            <i class="fas fa-check"></i>
+            </button>
+        </form>
+        <form method="get" action="{% url 'cancelar_servico' codigo=servico.codigo %} " class="d-inline"> 
+            {% csrf_token %}
+            <input type="hidden" name="codigo" value="{{ servico.codigo }}">
+            <button type="submit" class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center" title="Cancelar Serviço" style="width: 40px; height: 40px; box-shadow: 0 2px 6px #0002;">
+              <i class="fas fa-times"></i>
+            </button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  
+  <div class="bg-white rounded-xl shadow-lg p-6 space-y-4">
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-hashtag text-[#2C4158]"></i> Código: <span class="text-gray-900 font-normal">{{ servico.codigo }}</span></p>
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-car text-[#2C4158]"></i> Placa: <span class="text-gray-900 font-normal">{{ servico.veiculo.placa }}</span></p>
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-align-left text-[#2C4158]"></i> Descrição: <span class="text-gray-900 font-normal">{{ servico.descricao }}</span></p>
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-calendar-plus text-[#2C4158]"></i> Data de abertura: <span class="text-gray-900 font-normal">{{ servico.data_inicio|date:'d/m/Y' }}</span></p>
+    {% if servico.data_finalizacao %}
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-calendar-check text-[#2C4158]"></i> Data de conclusão: <span class="text-gray-900 font-normal">{{ servico.data_finalizacao|date:'d/m/Y' }}</span></p>
+    {% endif %}
+    {% if servico.data_cancelamento %}
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-calendar-times text-[#2C4158]"></i> Data de cancelamento: <span class="text-gray-900 font-normal">{{ servico.data_cancelamento|date:'d/m/Y' }}</span></p>
+    {% endif %}
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-user text-[#2C4158]"></i> Cliente: <span class="text-gray-900 font-normal">{{ servico.cliente.nome }}</span></p>
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-dollar-sign text-[#2C4158]"></i> Valor: <span class="text-gray-900 font-normal">R$ {{ servico.preco|floatformat:2 }}</span></p>
+    <p class="text-gray-700 font-semibold flex items-center gap-2"><i class="fas fa-info-circle text-[#2C4158]"></i> Status: <span class="text-gray-900 font-normal">{{ servico.status }}</span></p>
+  </div>
+</div>
+{% endblock %}

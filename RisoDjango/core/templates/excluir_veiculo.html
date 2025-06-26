@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Veículo{% endblock %}
+
+{% block content %}
+<h2>Excluir Veículo - {{ vehicle.placa }}</h2>
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% else %}
+  <p>Tem certeza que deseja excluir o veículo <strong>{{ vehicle.marca }} {{ vehicle.modelo }} ({{ vehicle.placa }})</strong>?</p>
+{% endif %}
+
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="placa" value="{{ vehicle.placa }}">
+  <button type="submit" class="btn btn-danger">Excluir</button>
+  <a href="{% url 'listar_veiculos' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
