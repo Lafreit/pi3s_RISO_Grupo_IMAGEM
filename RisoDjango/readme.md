@@ -60,7 +60,14 @@ O RisoDjango é um sistema web desenvolvido em Django para gerenciar clientes, v
    ```bash
    python manage.py migrate
    ```
-6. **Crie um superusuário (opcional):**
+6. **Crie um superusuário:**
+   > É necessário criar um superusuário com usuário, email e senha para acessar o sistema Django.
+   >
+   > Por padrão, o banco de dados SQLite já possui um usuário:
+   > - **Usuário:** admin
+   > - **Senha:** 123456
+   >
+   > Caso deseje criar outro usuário:
    ```bash
    python manage.py createsuperuser
    ```
