@@ -99,6 +99,8 @@ O RisoDjango é um sistema web desenvolvido em Django para gerenciar clientes, v
    ```
    O relatório estará disponível na pasta `htmlcov/index.html`.
 
+   ![Coverage](docs/coverage.png)
+
 ---
 
 ## Imagens do Sistema
